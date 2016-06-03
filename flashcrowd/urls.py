@@ -22,5 +22,7 @@ urlpatterns = [
     url(r'^jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
     url(r'^admin/', admin.site.urls),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-    url(r'^api/', include('flashcrowd.api.urls', namespace='api'))
+    url(r'^api/', include('flashcrowd.api.urls', namespace='api')),
+    url(r'', include('flashcrowd.core.urls', namespace='core'))
+
 ]
