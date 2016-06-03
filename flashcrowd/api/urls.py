@@ -3,8 +3,9 @@ from rest_framework import routers
 import viewsets
 
 router  = routers.DefaultRouter()
-router.register(r'users', viewsets.UsersViewSet)
-router.register(r'tasks', viewsets.TasksViewSet)
+router.register(r'users', viewsets.UsersViewSet, base_name='customuser')
+router.register(r'tasks', viewsets.TasksViewSet, base_name='task')
+router.register(r'calls', viewsets.CallsViewSet, base_name='call')
 
 urlpatterns = [
     url(r'^', include(router.urls)),

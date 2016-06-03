@@ -30,3 +30,13 @@ class TaskModelPermission(BasePermission):
     def has_object_permission(self, request, view, obj):
         # TODO
         return True
+
+
+class CallModelPermission(BasePermission):
+    def has_permission(self, request, view):
+        # TODO
+        return True
+
+    def has_object_permission(self, request, view, obj):
+        # TODO
+        return True

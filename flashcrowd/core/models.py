@@ -28,13 +28,21 @@ class Task(models.Model):
 
 
 class Call(models.Model):
+    STATES = (
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected'),
+        ('completed', 'Completed'),
+        ('won', 'Succeeded'),
+        ('lost', 'Failed'),
+    )
+
     task = models.ForeignKey('Task', null=False, blank=False, related_name='calls')
     executor = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, blank=False, related_name='calls')
     date_decided = models.DateTimeField(default=now, null=False, blank=False)
-    is_accepted = models.BooleanField(null=False, blank=False)
-    is_completed = models.BooleanField(default=False, null=False, blank=False)
+    # is_accepted = models.BooleanField(null=False, blank=False)
+    # is_completed = models.BooleanField(default=False, null=False, blank=False)
+    state = models.CharField(max_length=16, choices=STATES, null=False, blank=False)
     proof = models.ImageField(null=True, blank=True, upload_to='proofs')
-
 
     def save(self, *args, **kwargs):
         # Logic comes here
@@ -44,6 +52,6 @@ class Call(models.Model):
         return self.__unicode__()
 
     def __unicode__(self):
-        return u'{} -> "{}": accepted={}, completed={}'.format(
-            self.executor, self.task, self.is_accepted, self.is_completed
+        return u'{} {} "{}"'.format(
+            self.executor, self.state, self.task
         )
