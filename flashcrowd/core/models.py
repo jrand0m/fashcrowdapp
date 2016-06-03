@@ -20,6 +20,12 @@ class Task(models.Model):
         # Logic comes here
         super(Task, self).save(*args, **kwargs)
 
+    def __repr__(self):
+        return self.__unicode__()
+
+    def __unicode__(self):
+        return u'Task by {} for {} points'.format(self.author, self.bounty)
+
 
 class Call(models.Model):
     task = models.ForeignKey('Task', null=False, blank=False, related_name='calls')
@@ -33,3 +39,11 @@ class Call(models.Model):
     def save(self, *args, **kwargs):
         # Logic comes here
         super(Call, self).save(*args, **kwargs)
+
+    def __repr__(self):
+        return self.__unicode__()
+
+    def __unicode__(self):
+        return u'{} -> "{}": accepted={}, completed={}'.format(
+            self.executor, self.task, self.is_accepted, self.is_completed
+        )
