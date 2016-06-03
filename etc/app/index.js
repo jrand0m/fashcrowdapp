@@ -1,9 +1,11 @@
-import jQuery from 'lib/jquery'
+import $ from 'lib/jquery'
 
 import Layout from 'templates/layout.jade'
 
-jQuery(() => {
+$(() => {
     "use strict";
 
-    jQuery.parseHTML(Layout({})).appendTo('body');
+    var data = JSON.parse($('#profile').text());
+
+    $($.parseHTML(Layout(data))).appendTo('body');
 });
