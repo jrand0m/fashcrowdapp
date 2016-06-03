@@ -3,3 +3,8 @@
 .env
 .idea/
 *.pyc
+etc/node_modules/
+etc/dist/
+etc/app/bower/
+flashcrowd/static/app.compiled.js
+flashcrowd/static/index.css

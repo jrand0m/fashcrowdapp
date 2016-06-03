@@ -1,0 +1,27 @@
+{
+  "name": "FlashCrowd",
+  "version": "0.0.0",
+  "description": "",
+  "main": "app/index.js",
+  "scripts": {
+    "bower": "./node_modules/bower/bin/bower install",
+    "node-sass": "./node_modules/node-sass/bin/node-sass --output dist app/sass/index.sass --output-style compressed",
+    "webpack": "./node_modules/webpack/bin/webpack.js",
+    "cpx": "./node_modules/cpx/bin/index.js \"./dist/*\" \"./../flashcrowd/static\"",
+    "postinstall": "npm run bower && npm run node-sass && npm run webpack && npm run cpx"
+  },
+  "author": "Volodymyr Iatsyshyn <viatsyshyn@gmail.com>",
+  "license": "proprietary",
+  "devDependencies": {
+    "babel-core": "^6.3.13",
+    "babel-loader": "^6.2.0",
+    "babel-preset-es2015": "^6.3.13",
+    "bower": "^1.7.9",
+    "cpx": "^1.3.1",
+    "css-loader": "^0.23.0",
+    "jade": "^1.11.0",
+    "jade-loader": "^0.8.0",
+    "node-sass": "^3.4.2",
+    "webpack": "^1.12.15"
+  }
+}
