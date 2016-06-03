@@ -5,6 +5,7 @@
 etc/node_modules/
 etc/dist/
 etc/app/bower/
-flashcrowd/static/app.compiled.js
-flashcrowd/static/index.css
+flashcrowd/static/*.js
+flashcrowd/static/*.map
+flashcrowd/static/*.css
 *.sqlite3

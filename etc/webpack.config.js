@@ -15,11 +15,10 @@
         ]
     },
     resolve: {
-        root: __dirname,
+        root: __dirname + '/app',
         moduleDirectories: [__dirname + "/app"],
         alias: {
-            "jquery$": __dirname + "/bower/jquery/dist/jquery.js",
-            "bootstrap": __dirname + "/bower/bootstrap/dist"
+            "bootstrap": __dirname + "/app/bower/bootstrap-sass/assets/javascripts"
         }
     }
 };
