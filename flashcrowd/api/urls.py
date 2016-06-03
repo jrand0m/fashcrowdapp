@@ -1,9 +1,12 @@
-from django.conf.urls import url
-from . import views
+from django.conf.urls import url, include
+from rest_framework import routers
+import viewsets
 
+router  = routers.DefaultRouter()
+router.register(r'users', viewsets.UsersViewSet)
+router.register(r'tasks', viewsets.TasksViewSet)
 
 urlpatterns = [
-    url(r'^create/', views.create_task, name='create'),
-    url(r'^accept/', views.accept_task, name='accept'),
-    url(r'^reject/', views.reject_task, name='reject')
+    url(r'^', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
