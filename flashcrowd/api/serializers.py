@@ -12,3 +12,8 @@ class UserSerializer(ModelSerializer):
 class TaskSerializer(ModelSerializer):
     class Meta:
         model = Task
+
+
+class CallSerializer(ModelSerializer):
+    class Meta:
+        model = Call
