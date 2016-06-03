@@ -1,0 +1,16 @@
+{
+  "name": "FlashCrowd",
+  "version": "0.0.0",
+  "private": true,
+  "main": [],
+  "ignore": [
+    "node_modules",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "bootstrap": "~3.3.5"
+  },
+  "devDependencies": {},
+  "license": "MIT"
+}
