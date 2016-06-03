@@ -1,5 +1,5 @@
 {
-  "name": "FlashCrowd",
+  "name": "flash-crowd",
   "version": "0.0.0",
   "private": true,
   "main": [],
@@ -9,7 +9,7 @@
   ],
   "dependencies": {
     "jquery": "~2.1.4",
-    "bootstrap": "~3.3.5"
+    "bootstrap-sass": "^3.3.6"
   },
   "devDependencies": {},
   "license": "MIT"
