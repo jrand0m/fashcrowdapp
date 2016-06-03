@@ -1,10 +1,10 @@
-.pyc
-.pyo
 .env
 .idea/
 *.pyc
+*.pyo
 etc/node_modules/
 etc/dist/
 etc/app/bower/
 flashcrowd/static/app.compiled.js
 flashcrowd/static/index.css
+*.sqlite3
