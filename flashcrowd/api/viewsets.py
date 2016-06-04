@@ -2,6 +2,8 @@ from collections import OrderedDict
 
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import APIException
+from rest_framework.parsers import FormParser
+from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -52,9 +54,12 @@ class TasksViewSet(ModelViewSet):
     def reject(self, request, pk):
         return self.accept_or_reject(request, pk, False)
 
-    @detail_route(permission_classes=[IsAuthenticated])
+    @detail_route(permission_classes=[IsAuthenticated], parser_classes=[FormParser, MultiPartParser], methods=['POST'])
     def complete(self, request, pk):
         task = get_object_or_404(Task, pk=pk)
+        proof = request.FILES.get('proof')
+        if not proof:
+            raise APIException('Missing proof image!')
 
         call = Call.objects.filter(task=task, executor=request.user).first()
 
@@ -67,7 +72,8 @@ class TasksViewSet(ModelViewSet):
             ))
 
         # TODO: Store proof image here
-        # call.state = 'completed'
+        call.state = 'completed'
+        call.proof.save(proof.name, proof)
         call.save()
 
         return Response(serializers.TaskSerializer(instance=task, context=dict(request=request)).data)
