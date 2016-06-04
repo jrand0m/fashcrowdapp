@@ -1,30 +1,30 @@
 @import "../bower/bootstrap-sass/assets/stylesheets/bootstrap"
 
-header
-  position: fixed
-  top: 0
-  left: 0
-  right: 0
-  height: 100px
-  background: transparentize(lime, .9)
-
-  img
-    border-radius: 25%
-    overflow: hidden
-    background: #ddd
-
 footer
   position: fixed
   bottom: 0
   left: 0
   right: 0
-  height: 50px
+  height: 38px
 
   background: transparentize(red, .9)
+  z-index: 1001
 
 #page-cnt
   overflow: scroll
-  margin-top: 100px
-  margin-bottom: 50px
+  margin-bottom: 38px
   background: #fafafa
-  height: calc(100vh - 150px)
+  height: calc(100vh - 38px)
+  position: relative
+  box-sizing: border-box
+  padding: 15px
+
+  &.freeze::after
+    content: ' '
+    position: fixed
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    background: transparentize(#aaa, .3)
+    z-index: 1000

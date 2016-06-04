@@ -9,7 +9,8 @@
   ],
   "dependencies": {
     "jquery": "~2.1.4",
-    "bootstrap-sass": "^3.3.6"
+    "bootstrap-sass": "^3.3.6",
+    "page": "visionmedia/page.js#^1.7.1"
   },
   "devDependencies": {},
   "license": "MIT"
