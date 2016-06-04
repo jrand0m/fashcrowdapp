@@ -26,6 +26,10 @@ class TasksViewSet(ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
+        Event.create_new('task_created', [self.request.user])
+        users = list(CustomUser.objects.exclude(id=self.request.user.id).all())
+        Event.create_new('new_task', users)
+
     def accept_or_reject(self, request, pk, is_accept):
         task = get_object_or_404(Task, pk=pk)
 
@@ -85,7 +89,6 @@ class EventsViewSet(ModelViewSet):
 
     def get_queryset(self):
         min = float(self.request.GET.get('min', 0)) / 1000000
-        print min
 
         local_tz = pytz.timezone("Europe/Kiev")
         utc_dt = datetime.utcfromtimestamp(min).replace(tzinfo=pytz.utc)

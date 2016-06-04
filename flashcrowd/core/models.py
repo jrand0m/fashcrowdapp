@@ -108,6 +108,7 @@ class UserBadge(models.Model):
 
 class Event(models.Model):
     TYPES = (
+        ('task_created', 'Your task is now live!'),
         ('new_task', 'We have a new task for you!'),
         ('task_accepted', 'Someone accepted your task!'),
         ('task_rejected', 'Someone rejected your task.'),
@@ -117,6 +118,7 @@ class Event(models.Model):
     )
 
     TYPE_TO_STYLE_MAP = dict(
+        task_created='success',
         new_task='info',
         task_accepted='info',
         task_rejected='info',
