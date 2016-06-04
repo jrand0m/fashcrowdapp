@@ -44,6 +44,8 @@ class TasksViewSet(ModelViewSet):
             call = Call(task=task, executor=request.user, state='accepted' if is_accept else 'rejected')
             call.save()
 
+            Event.create_new('task_accepted' if is_accept else 'task_rejected', [task.author])
+
         return Response(serializers.TaskSerializer(instance=task, context=dict(request=request)).data)
 
     @detail_route(permission_classes=[IsAuthenticated])
@@ -75,6 +77,8 @@ class TasksViewSet(ModelViewSet):
         call.state = 'completed'
         call.proof.save(proof.name, proof)
         call.save()
+
+        Event.create_new('task_completed', [task.author])
 
         return Response(serializers.TaskSerializer(instance=task, context=dict(request=request)).data)
 
@@ -127,8 +131,17 @@ class CallsViewSet(ModelViewSet):
     def approve(self, request, pk):
         call = get_object_or_404(Call, pk=pk, task__author=request.user)
 
+        if call.state != 'completed':
+            raise APIException('Cannot approve task if call state is "{}" (must be "completed").'.format(
+                call.state
+            ))
+
         call.state = 'won'
         call.save()
+
+        call.executor.grant_points(call.task.get_final_bounty())
+
+        Event.create_new('proof_accepted', [call.executor])
 
         return Response(serializers.CallSerializer(instance=call, many=False, context=dict(request=request)).data)
 
@@ -136,8 +149,15 @@ class CallsViewSet(ModelViewSet):
     def decline(self, request, pk):
         call = get_object_or_404(Call, pk=pk, task__author=request.user)
 
+        if call.state != 'completed':
+            raise APIException('Cannot decline task if call state is "{}" (must be "completed").'.format(
+                call.state
+            ))
+
         call.state = 'lost'
         call.save()
+
+        Event.create_new('proof_rejected', [call.executor])
 
         return Response(serializers.CallSerializer(instance=call, many=False, context=dict(request=request)).data)
 
