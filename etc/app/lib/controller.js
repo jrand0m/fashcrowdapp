@@ -28,14 +28,12 @@ export function navigate(path) {
 var fd = null;
 
 page('*', (ctx, next) => {
-    console.log('adding FormData to context', fd);
     ctx.formData = fd;
     fd = null;
     next();
 });
 
 export function dispatchFormData(path, formData) {
-    console.log('caching FormData', formData);
     fd = formData;
     navigate(path);
 }
