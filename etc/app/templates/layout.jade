@@ -3,9 +3,28 @@
 #page-cnt
 
 footer.footer
-    nav.nav.nav-pills
-        li(role="navigation"): a(data-href="/task/feed") feed
-        li(role="navigation"): a(data-href="/task/active") my
-        li(role="navigation"): a(data-href="/task/new") new
-        li(role="navigation"): a(data-href="/") awards
-        li(role="navigation"): a(data-href="/") profile
+    .main-menu
+        .row
+            .col-xs-5
+                .row
+                    .col-xs-6
+                        a.main-menu-item(data-href="/task/feed")
+                            .main-menu-item-icon.icon-flash
+                            .main-menu-item-title FlashFeed
+                    .col-xs-6
+                        a.main-menu-item(data-href="/task/active")
+                            .main-menu-item-icon.icon-my
+                            .main-menu-item-title My Flashes
+            .col-xs-2.no-padding
+                a(data-href="/task/new")
+                    .main-menu-item-create
+            .col-xs-5
+                .row
+                    .col-xs-6
+                        a.main-menu-item(data-href="/")
+                            .main-menu-item-icon.icon-awards
+                            .main-menu-item-title Awards
+                    .col-xs-6
+                        a.main-menu-item(data-href="/")
+                            .main-menu-item-icon.icon-profile
+                            .main-menu-item-title Profile

@@ -6,6 +6,7 @@ $icon-font-path: "/static/fonts/bootstrap/"
 
 $fa-font-path: "/static/fonts"
 
+@import "_helpers"
 @import "../bower/font-awesome/scss/font-awesome"
 
 @import "spinner"
@@ -18,9 +19,10 @@ footer
   bottom: 0
   left: 0
   right: 0
-  height: 38px
+  height: 6rem
 
-  background: transparentize(red, .9)
+  background: $body
+  border-top: 1px solid $hr
   z-index: 1001
 
 header
@@ -40,15 +42,16 @@ header
 
 #page-cnt, .dialog
   overflow: scroll
-  margin-bottom: 38px
+  margin-bottom: 6rem
   background: #fafafa
-  height: calc(100vh - 38px)
+  height: calc(100vh - 6rem)
   position: relative
   box-sizing: border-box
   padding: 15px
 
 #page-cnt
     background: $bg
+    overflow-x: hidden
 
 #page-cnt
   &.freeze
@@ -83,13 +86,13 @@ header
 .dialog
   padding: 15px
   position: fixed
-  background: transparentize(white, .1)
+  background: $bg
   top: 0
   left: 0
   right: 0
 
-  .dlg--content, .dlg--header, .dlg--footer
-    background: #fff
+//  .dlg--content, .dlg--header, .dlg--footer
+//    background: #fff
 
   .dlg--content
     padding: 15px
@@ -103,7 +106,12 @@ header
   border-radius: 50%
   width: 64px
   height: 64px
-  background-color: #ddd
+  background-color: $soft
+  margin-right: 1rem
+
+  &.bigger
+    width: 96px
+    height: 96px
 
   &.selfie
     background-color: goldenrod
@@ -120,9 +128,48 @@ header
   &.mystery
     background-color: cornflowerblue
 
-.card
-    border-radius: 1rem
-    background: $body
-    padding: 1rem
-    box-shadow: -0.5rem 0.5rem 0.5rem $soft
-s
+.main-menu
+    padding-left: 5%
+    padding-right: 5%
+    .main-menu-item
+        display: block
+        text-align: center
+        margin: 1rem 0
+        color: $hr
+        white-space: nowrap
+        .main-menu-item-icon
+            width: auto
+            height: 2.5rem
+            background-size: contain
+            background-position: center
+            background-repeat: no-repeat
+            &.icon-flash
+                background-image: url(/static/images/flash.png)
+            &.icon-my
+                background-image: url(/static/images/my.png)
+            &.icon-awards
+                background-image: url(/static/images/awards.png)
+            &.icon-profile
+                background-image: url(/static/images/profile.png)
+        .main-menu-item-title
+            font-size: 1rem
+            line-height: 1rem
+            margin-top: 0.5rem
+        &.active, &:hover
+            color: $accent
+            .main-menu-item-icon
+                &.icon-flash
+                    background-image: url(/static/images/flash-hover.png)
+                &.icon-my
+                    background-image: url(/static/images/my-hover.png)
+                &.icon-awards
+                    background-image: url(/static/images/awards-hover.png)
+                &.icon-profile
+                    background-image: url(/static/images/profile-hover.png)
+    .main-menu-item-create
+        cursor: pointer
+        width: auto
+        height: 6rem
+        background: url(/static/images/create.png) no-repeat center top
+        background-size: contain
+        margin-top: -1.5rem

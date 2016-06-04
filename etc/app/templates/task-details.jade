@@ -1,34 +1,80 @@
 include _task
 
 .dialog
-    .dlg--header
-        span.close-me.fa.fa-times-circle.fa-5
-        h2= model.summary
+    //.dlg--header
+    header.bigger-text
+        //span.close-me.fa.fa-times-circle.fa-5.pull-right
+        a.pull-left.close-me.absolute &lsaquo; Back
+        .text-center
+            = model.summary
 
     .dlg--content
-        +TaskCard(model)
+        .row
+            .col.col-md-offset-1.col-md-10
+                //-+TaskCard(model)
 
-        div(style="margin-top:15px")
-            if model.is_author
-                button.btn.btn-xs()
-                    i.fa.fa-edit
-                    | Edit
+                .card
+                    .text-center
+                        .category.bigger.margin-auto(class=model.category)
 
-            else if !model.call
-                button.btn.btn-xs.btn-primary(data-href="/task/#{model.id}/accept") Go for it
-                button.btn.btn-xs(data-href="/task/#{model.id}/reject") Dismiss
+                        div(style="margin: 1rem 0 2rem")
+                            strong.bigger-text.shine-text= model.summary
 
-            else if model.call.state === 'accepted'
-                form(data-action="/task/#{model.id}/complete")
-                    input.form-control(type="file" name="proof" required)
-                    br
-                    input.btn.btn-md.btn-primary.btn-default(type="submit" value="Send")
+                    div
+                        //-if model.summary
+                            b= model.summary
+                            | &nbsp;
 
-            else if model.call.state === 'completed'
-                | Verification is pending
+                        if model.call
+                            i= model.call.state
+                            | &nbsp;
 
-            else
-                | Your task is #{model.call.state}
+                        small.thin= model.description
+
+                    .row(style="margin-top: 2rem; margin-bottom: 2rem")
+                        .col-xs-4.text-center
+                            .circled 12h
+                            small Deadline
+                        .col-xs-4.text-center
+                            .circled 30
+                            small Value
+                        .col-xs-4.text-center
+                            .circled 35
+                            small Participants
+
+                    div(style="margin-bottom: 2rem")
+                        .hashtag holy
+                        .hashtag fuck
+                        .hashtag i
+                        .hashtag am
+                        .hashtag so
+                        .hashtag fucking
+                        .hashtag tired
+
+                div(style="margin-top:15px")
+                    if model.is_author
+                        button.btn.btn-xs()
+                            i.fa.fa-edit
+                            | Edit
+
+                    else if !model.call
+                        .row
+                            .col-xs-6
+                                button.full-width.btn.btn-lg.btn-pill.btn-primary(data-href="/task/#{model.id}/accept") Go for it
+                            .col-xs-6
+                                button.full-width.btn.btn-lg.btn-pill.btn-danger(data-href="/task/#{model.id}/reject") Dismiss
+
+                    else if model.call.state === 'accepted'
+                        form(data-action="/task/#{model.id}/complete")
+                            input.form-control(type="file" name="proof" required)
+                            br
+                            input.btn.btn-md.btn-primary.btn-default(type="submit" value="Send")
+
+                    else if model.call.state === 'completed'
+                        | Verification is pending
+
+                    else
+                        | Your task is #{model.call.state}
 
 
     .dlg--footer

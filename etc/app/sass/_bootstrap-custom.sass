@@ -3,15 +3,54 @@ $body: #FFFFFF
 $accent: #007AFF
 $shine: #FF2861
 $soft: #CAC9CF
+$hr: #888888
 
 $btn-default-color: $accent
 $btn-default-bg: $body
 $btn-default-border: $accent
 
+$btn-primary-color: $body
+$btn-primary-bg: $accent
+$btn-primary-border: $accent
+
+$btn-danger-color: $body
+$btn-danger-bg: $shine
+$btn-danger-border: $shine
+
+$input-group-addon-bg: $body
+$input-group-addon-border-color: $body
+
+$input-bg: lighten($soft, 17%);
+$input-border: lighten($accent, 10%)
+
 .btn
     box-shadow: none !important
     border-width: 2px !important
     font-weight: 700 !important
-    &:hover, &:active, &.active
-        background: $accent !important
-        color: $body !important
+    &.btn-default
+        &:hover, &:active, &.active
+            background: $accent !important
+            color: $body !important
+    &.btn-primary
+        &:hover, &:active, &.active
+            background: $accent !important
+            color: $body !important
+    &.btn-danger
+        &:hover, &:active, &.active
+            background: $shine !important
+            color: $body !important
+
+    &.btn-pill
+        &.btn-lg
+            border-radius: 3rem;
+
+    &.btn-lg
+        padding: 6px 20px !important
+        font-size: 15px !important
+        font-weight: 400 !important
+
+.input-group-addon + input
+    border-left: 0 none
+
+a
+    cursor: pointer

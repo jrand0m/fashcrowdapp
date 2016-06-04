@@ -3,7 +3,7 @@ mixin TaskCard(task)
         .pull-left
             .category(class=task.category)
         .pull-left
-            strong= task.author.username
+            strong.bigger-text.shine-text= task.author.username
 
             div
                 if task.summary
@@ -14,6 +14,6 @@ mixin TaskCard(task)
                     i= task.call.state
                     | &nbsp;
 
-                small= task.description
+                small.thin= task.description
 
         .clearfix
