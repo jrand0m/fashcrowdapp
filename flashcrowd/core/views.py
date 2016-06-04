@@ -20,3 +20,11 @@ def index(request):
         'bootstrap_json': json.dumps(bootstrap_json),
     }
     return render(request, 'index.html', context)
+
+def make_error_handler(code, status):
+    def error_handler(request):
+        return render(request, 'error.html', dict(
+            code=code,
+            status=status
+        ))
+    return error_handler
