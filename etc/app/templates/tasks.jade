@@ -1,11 +1,12 @@
 include _task
 
 header
-    nav.nav.nav-pills
-        li(role="presentation"): a(data-href="/task/active")(class=tab == 'active'?'active':'') Accepted
-        li(role="presentation"): a(data-href="/task/saved")(class=tab == 'saved'?'active':'') Saved
-        li(role="presentation"): a(data-href="/task/my")(class=tab == 'my'?'active':'') My
-        li(role="presentation"): a(data-href="/calls") Calls
+    nav.text-center
+        .btn-group
+            a.btn.btn-default.btn-lg(data-href="/task/active")(class=tab == 'active'?'active':'') Accepted
+            a.btn.btn-default.btn-lg(data-href="/task/saved")(class=tab == 'saved'?'active':'') Saved
+            a.btn.btn-default.btn-lg(data-href="/task/my")(class=tab == 'my'?'active':'') My
+            a.btn.btn-default.btn-lg(data-href="/calls") Calls
 
 if !model.length
     h2(style="text-align: center") Whops! Nothing here so far :-(

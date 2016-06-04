@@ -1,5 +1,7 @@
 $icon-font-path: "/static/fonts/bootstrap/"
 
+@import "bootstrap-custom"
+
 @import "../bower/bootstrap-sass/assets/stylesheets/bootstrap"
 
 $fa-font-path: "/static/fonts"
@@ -7,6 +9,9 @@ $fa-font-path: "/static/fonts"
 @import "../bower/font-awesome/scss/font-awesome"
 
 @import "spinner"
+
+body
+    background: $bg
 
 footer
   position: fixed
@@ -19,7 +24,7 @@ footer
   z-index: 1001
 
 header
-  background: transparentize(blueviolet, .5)
+  background: $soft
   margin: -15px
   padding: 15px
   margin-bottom: 15px
@@ -41,6 +46,9 @@ header
   position: relative
   box-sizing: border-box
   padding: 15px
+
+#page-cnt
+    background: $bg
 
 #page-cnt
   &.freeze
@@ -111,3 +119,10 @@ header
 
   &.mystery
     background-color: cornflowerblue
+
+.card
+    border-radius: 1rem
+    background: $body
+    padding: 1rem
+    box-shadow: -0.5rem 0.5rem 0.5rem $soft
+s

@@ -1,19 +1,19 @@
 mixin TaskCard(task)
-    .task(data-href="/task/#{task.id}/details/")&attributes(attributes)
-        .row
-            .col-xs-3
-                .category(class=task.category)
-            .col-xs-9
-                strong= task.author.username
+    .task.card(data-href="/task/#{task.id}/details/")&attributes(attributes)
+        .pull-left
+            .category(class=task.category)
+        .pull-left
+            strong= task.author.username
 
-                div
-                    if task.summary
-                        b= task.summary
-                        | &nbsp;
+            div
+                if task.summary
+                    b= task.summary
+                    | &nbsp;
 
-                    if task.call
-                        i= task.call.state
-                        | &nbsp;
+                if task.call
+                    i= task.call.state
+                    | &nbsp;
 
-                    small= task.description
+                small= task.description
 
+        .clearfix

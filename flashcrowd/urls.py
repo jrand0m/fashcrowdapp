@@ -29,6 +29,6 @@ urlpatterns = [
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     url(r'^api/', include('flashcrowd.api.urls')),
     url(r'', include('flashcrowd.core.urls', namespace='core')),
-
+    url(r'^accounts/', include('allauth.urls')),
     url(r'^test-error', handler_500, name='test-error'),
 ]
