@@ -6,6 +6,8 @@ $fa-font-path: "/static/fonts"
 
 @import "../bower/font-awesome/scss/font-awesome"
 
+@import "spinner"
+
 footer
   position: fixed
   bottom: 0
@@ -40,15 +42,32 @@ header
   box-sizing: border-box
   padding: 15px
 
-  &.freeze::after
-    content: ' '
-    position: fixed
-    top: 0
-    left: 0
-    right: 0
-    bottom: 0
-    background: transparentize(#aaa, .3)
-    z-index: 1000
+#page-cnt
+  &.freeze
+    &::before
+      content: ' '
+      position: fixed
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
+      background: transparentize(#aaa, .3)
+      z-index: 1000
+
+    &::after
+      content: ' '
+      border-radius: 50%
+      width: $base-line-height*2
+      height: $base-line-height*2
+      border: .4rem solid $off-white
+      border-top-color: $white
+      animation: spin $spin-duration infinite linear
+      position: fixed
+      top: 50%
+      left: 50%
+      z-index: 10001
+      margin-top: -$base-line-height
+      margin-left: -$base-line-height
 
 .task + .task
   margin-top: 15px

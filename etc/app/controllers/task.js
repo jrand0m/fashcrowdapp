@@ -82,7 +82,7 @@ export default class extends base {
         this.freeze();
 
         tasks.complete(ctx.params.id, ctx.formData)
-            .then(_ => this.navigate('/task/feed'));
+            .then(_ => this.navigate('/task/active'));
     }
 
     @route('/calls')
