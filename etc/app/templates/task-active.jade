@@ -1,12 +1,11 @@
 header
-    nav.nav.nav-tabs
-        li(role="presentation"): a(data-href="/task/active") Accepted
+    nav.nav.nav-pills
+        li(role="presentation"): a.active(data-href="/task/active") Accepted
         li(role="presentation"): a(data-href="/task/saved") Saved
         li(role="presentation"): a(data-href="/task/my") My
 
 if !model.length
     h2(style="text-align: center") Whops! Nothing here so far :-(
-
 
 each task in model
     .row.task

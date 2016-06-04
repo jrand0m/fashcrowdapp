@@ -10,8 +10,8 @@ export default new class extends base {
         return this.get_('/api/tasks/available_tasks/', data || {})
     }
 
-    get_posted(data?: Object): Promise {
-        return this.get_('/api/tasks/posted_tasks/', data || {})
+    get_active(data?: Object): Promise {
+        return this.get_('/api/tasks/active_tasks/', data || {})
     }
 
     accept(id) {

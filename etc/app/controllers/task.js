@@ -5,6 +5,7 @@ import tasks from 'services/tasks'
 import TaskForm from 'templates/task-new.jade'
 import TaskFeed from 'templates/task-feed.jade'
 import TaskDetails from 'templates/task-details.jade'
+import TaskActive from 'templates/task-active.jade'
 import Tasks from 'templates/tasks.jade'
 
 export default class extends base {
@@ -35,8 +36,16 @@ export default class extends base {
     my() {
         this.freeze();
 
-        tasks.get_posted()
+        tasks.get_active()
             .then(_ => this.push(Tasks, _))
+    }
+
+    @route('/task/active')
+    active() {
+        this.freeze();
+
+        tasks.get_active()
+            .then(_ => this.push(TaskActive, _))
     }
 
     @route('/task/:id/details')
@@ -54,11 +63,11 @@ export default class extends base {
         this.freeze();
 
         tasks.accept(ctx.params.id)
-            .then(_ => this.navigate('/task/my'));
+            .then(_ => this.navigate('/task/active'));
     }
 
     @route('/task/:id/reject')
-    accept(ctx) {
+    reject(ctx) {
         this.freeze();
 
         tasks.reject(ctx.params.id)
