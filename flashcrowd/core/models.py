@@ -88,6 +88,7 @@ class Badge(models.Model):
     name = models.CharField('badge name', max_length=120, blank=False, null=False)
     description = models.CharField('badge description', max_length=300, blank=True, null=False)
     level = models.IntegerField('badge level', null=False, blank=False, default=1)
+    validator = models.CharField('validator code', max_length=300, null=False, blank=False, default="True")
     # Nope. Too time-consuming. Not today.
     # @classmethod
     # def new(cls, author, bounty, deadline=None):

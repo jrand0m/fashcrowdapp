@@ -1,3 +1,5 @@
+include _task
+
 header
     nav.nav.nav-tabs
         li(role="presentation"): a(data-href="/task/active") Accepted
@@ -9,13 +11,4 @@ if !model.length
 
 
 each task in model
-    .row.task
-        .col-xs-3
-            img(width=64 height=64 src=task.author.photo)
-        .col-xs-9
-            h5= task.author.username
-            p
-                if task.summary
-                    b= task.summary
-                    | &nbsp;
-                = task.description
+    +TaskCard(task)

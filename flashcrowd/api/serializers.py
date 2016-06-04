@@ -105,7 +105,6 @@ class TaskSerializer(ModelSerializer):
             return None
         return DeepCallSerializer(instance=call, many=False, context=self.context).data
 
-
 class BadgeSerializer(ModelSerializer):
     class Meta:
         model = Badge

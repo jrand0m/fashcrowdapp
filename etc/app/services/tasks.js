@@ -14,6 +14,10 @@ export default new class extends base {
         return this.get_('/api/tasks/active_tasks/', data || {})
     }
 
+    get_complete(data?: Object): Promise {
+        return this.get_('/api/tasks/finished_tasks/', data || {})
+    }
+
     accept(id) {
         return this.get_(`/api/tasks/${id}/accept/`, {})
     }

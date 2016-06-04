@@ -118,8 +118,12 @@ class CallsViewSet(ModelViewSet):
 
 class BadgesViewSet(ModelViewSet):
     serializer_class = serializers.BadgeSerializer
-    queryset = Badge.objects.all()
     permission_classes = [permissions.BadgeModelPermission]
+
+    def get_queryset(self):
+        print self.request
+        print dir(self)
+        return Badge.objects.all()
 
 
 class EventsViewSet(ModelViewSet):
@@ -141,3 +145,4 @@ class CategoryViewSet(ModelViewSet):
     serializer_class = serializers.CategorySerializer
     queryset = Category.objects.all()
     permission_classes = [permissions.CategoryModelPermission]
+
