@@ -27,6 +27,10 @@ class Task(models.Model):
     def __unicode__(self):
         return u'Task by {} for {} points'.format(self.author, self.bounty)
 
+    def get_final_bounty(self):
+        # TODO: This will calculate actual badge bounty based on how many users accepted and rejected the task.
+        raise NotImplementedError()
+
 
 class Call(models.Model):
     STATES = (
