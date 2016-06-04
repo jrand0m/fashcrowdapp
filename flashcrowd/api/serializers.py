@@ -10,7 +10,6 @@ class UserSerializer(ModelSerializer):
         #fields = ('id', 'url', 'username', 'first_name', 'last_name', 'photo', 'points', 'badges_earned')
 
     badges_earned = SerializerMethodField()
-    # badges = BadgeSerializer(many=True, read_only=True, queryset=)
 
     def get_badges_earned(self, obj):
         #TODO mike: dont know how not to include all badges
@@ -40,7 +39,7 @@ class TaskSerializer(ModelSerializer):
     class Meta:
         model = Task
         fields = (
-            'id', 'url', 'description', 'date_created', 'date_deadline', 'bounty', 'author', 'calls',
+            'id', 'url', 'description', 'date_created', 'date_deadline', 'bounty', 'author', 'calls', 'summary',
             'calls_total', 'calls_accepted', 'calls_completed', 'calls_succeeded', 'calls_failed'
         )
         read_only_fields = ('id', 'url', 'date_created', 'author', 'calls', 'calls_total')
