@@ -72,12 +72,24 @@ class TasksViewSet(ModelViewSet):
 
     @list_route(permission_classes=[IsAuthenticated])
     def available_tasks(self, request):
-        queryset = Task.objects.exclude(author=self.request.user).order_by('date_created')
+        called_tasks = [x.task_id for x in Call.objects.filter(executor=self.request.user)]
+        queryset = Task.objects.exclude(author=self.request.user).exclude(id__in=called_tasks).order_by('date_created')
         return Response(serializers.TaskSerializer(instance=queryset, many=True, context=dict(request=self.request)).data)
 
     @list_route(permission_classes=[IsAuthenticated])
-    def posted_tasks(self, request):
-        queryset = Task.objects.filter(author=self.request.user).order_by('date_created')
+    def active_tasks(self, request):
+        called_active_tasks = [x.task_id for x in Call.objects.filter(executor=self.request.user, state__in=[
+            'accepted', 'completed'
+        ])]
+        queryset = Task.objects.filter(id__in=called_active_tasks).order_by('date_created')
+        return Response(serializers.TaskSerializer(instance=queryset, many=True, context=dict(request=self.request)).data)
+
+    @list_route(permission_classes=[IsAuthenticated])
+    def finished_tasks(self, request):
+        called_active_tasks = [x.task_id for x in Call.objects.filter(executor=self.request.user, state__in=[
+            'won', 'lost'
+        ])]
+        queryset = Task.objects.filter(id__in=called_active_tasks).order_by('date_created')
         return Response(serializers.TaskSerializer(instance=queryset, many=True, context=dict(request=self.request)).data)
 
     def list(self, request, *args, **kwargs):
