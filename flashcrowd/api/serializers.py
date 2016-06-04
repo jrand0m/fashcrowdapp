@@ -140,7 +140,8 @@ class DeepCallSerializer(CallSerializer):
 
 
 class UserBadgesSerializer(TaskSerializer):
-
     class Meta:
         model = UserBadge
         fields = ('id', 'user', 'badge', 'award_date')
+
+    badge = BadgeSerializer(many=False, read_only=True)
