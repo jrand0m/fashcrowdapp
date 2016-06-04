@@ -21,17 +21,19 @@ class TasksViewSet(ModelViewSet):
     queryset = Task.objects.all()
     permission_classes = [permissions.TaskModelPermission]
 
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
     def accept_or_reject(self, request, pk, is_accept):
         task = get_object_or_404(Task, pk=pk)
 
-        if Call.objects.filter(task=task, executor=request.user).count():
-            # What the fuck? The user tries to accept the task AGAIN? Not on my watch!
-            raise APIException('You cannot accept/reject the task again, retard!')
+        call = Call.objects.filter(task=task, executor=request.user).first()
 
-        call = Call(task=task, executor=request.user, state='accepted' if is_accept else 'rejected')
-        call.save()
+        if not call:
+            call = Call(task=task, executor=request.user, state='accepted' if is_accept else 'rejected')
+            call.save()
 
-        return Response(serializers.CallSerializer(instance=call, context=dict(request=request))).data
+        return Response(serializers.CallSerializer(instance=call, context=dict(request=request)).data)
 
     @detail_route(permission_classes=[IsAuthenticated])
     def accept(self, request, pk):

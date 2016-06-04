@@ -7,6 +7,7 @@ from django.utils.timezone import now
 
 class Task(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, blank=False, related_name='authored_tasks')
+    description = models.TextField(null=False, blank=False)
     date_created = models.DateTimeField(default=now, null=False, blank=False)
     date_deadline = models.DateTimeField(default=None, null=True, blank=True)
     bounty = models.PositiveIntegerField(null=False, blank=False)
@@ -25,6 +26,10 @@ class Task(models.Model):
 
     def __unicode__(self):
         return u'Task by {} for {} points'.format(self.author, self.bounty)
+
+    def get_final_bounty(self):
+        # TODO: This will calculate actual badge bounty based on how many users accepted and rejected the task.
+        raise NotImplementedError()
 
 
 class Call(models.Model):
@@ -89,12 +94,10 @@ class UserBadge(models.Model):
 
     def save(self, *args, **kwargs):
         # Logic comes here
-        super(Task, self).save(*args, **kwargs)
+        super(UserBadge, self).save(*args, **kwargs)
 
     def __repr__(self):
         return self.__unicode__()
 
     def __unicode__(self):
         return u'{}\'s {} badge'.format(self.user.username, self.badge.name)
-
-

@@ -1,21 +1,21 @@
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, HyperlinkedRelatedField
 from flashcrowd.users.models import CustomUser
-from flashcrowd.core.models import Task, Call, Badge
+from flashcrowd.core.models import Task, Call, Badge, UserBadge
 
 
 class UserSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('id', 'url', 'username', 'first_name', 'last_name', 'photo', 'points')
+        fields = ('id', 'url', 'username', 'first_name', 'last_name', 'photo', 'points', 'badges_earned')
         #fields = ('id', 'url', 'username', 'first_name', 'last_name', 'photo', 'points', 'badges_earned')
 
+    badges_earned = SerializerMethodField()
 
-    #badges_earned = BadgeSerializer(many=True, read_only=True, query_set=Badge.objects.filter('awarded_badge'))
-
-    def badges_earned(self, obj):
+    def get_badges_earned(self, obj):
         #TODO mike: dont know how not to include all badges
-        return obj.badges.filter(state='failed')
-        raise NotImplementedError()
+        user_badge_ids = [ub.badge_id for ub in UserBadge.objects.filter(user=obj)]
+        queryset = Badge.objects.filter(id__in=user_badge_ids)
+        return BadgeSerializer(instance=queryset, context=self.context, many=True).data
         #return obj.calls.filter(state='failed').count()
 
 
@@ -39,17 +39,18 @@ class TaskSerializer(ModelSerializer):
     class Meta:
         model = Task
         fields = (
-            'id', 'url', 'date_created', 'date_deadline', 'bounty', 'author', 'calls',
+            'id', 'url', 'description', 'date_created', 'date_deadline', 'bounty', 'author', 'calls',
             'calls_total', 'calls_accepted', 'calls_completed', 'calls_succeeded', 'calls_failed'
         )
+        read_only_fields = ('id', 'url', 'date_created', 'author', 'calls', 'calls_total')
 
-    author = UserSerializer(many=False)
+    author = UserSerializer(many=False, read_only=True)
 
-    calls_total = SerializerMethodField()
-    calls_accepted = SerializerMethodField()
-    calls_completed = SerializerMethodField()
-    calls_succeeded = SerializerMethodField()
-    calls_failed = SerializerMethodField()
+    calls_total = SerializerMethodField(read_only=True)
+    calls_accepted = SerializerMethodField(read_only=True)
+    calls_completed = SerializerMethodField(read_only=True)
+    calls_succeeded = SerializerMethodField(read_only=True)
+    calls_failed = SerializerMethodField(read_only=True)
 
     # calls = SerializerMethodField()
 
@@ -76,9 +77,3 @@ class BadgeSerializer(ModelSerializer):
     class Meta:
         model = Badge
         fields = ('id', 'icon', 'name', 'description')
-
-
-
-
-
-

@@ -9,3 +9,4 @@ flashcrowd/static/*.js
 flashcrowd/static/*.map
 flashcrowd/static/*.css
 *.sqlite3
+flashcrowd/media
