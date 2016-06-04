@@ -24,11 +24,11 @@ include _task
                     br
                     input.btn.btn-md.btn-primary.btn-default(type="submit" value="Send")
 
-            else if model.call.state === 'complete'
+            else if model.call.state === 'completed'
                 | Verification is pending
 
             else
-                | Your task is #{task.call.state}
+                | Your task is #{model.call.state}
 
 
     .dlg--footer

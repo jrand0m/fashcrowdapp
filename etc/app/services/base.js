@@ -31,7 +31,7 @@ export default class Base {
         return new Promise((resolve, reject) => {
 
             var oReq = new XMLHttpRequest();
-            oReq.open("POST", url);
+            oReq.open("POST", url + (url.indexOf('?') >= 0 ? '&': '?') + 'format=json');
 
             oReq.addEventListener("load", _ => resolve(JSON.parse(oReq.responseText)));
             oReq.addEventListener("error", _ => reject());
