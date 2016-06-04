@@ -16,7 +16,6 @@ class UserSerializer(ModelSerializer):
         user_badge_ids = [ub.badge_id for ub in UserBadge.objects.filter(user=obj)]
         queryset = Badge.objects.filter(id__in=user_badge_ids)
         return BadgeSerializer(instance=queryset, context=self.context, many=True).data
-        #return obj.calls.filter(state='failed').count()
 
 
 class CallSerializer(ModelSerializer):
@@ -73,7 +72,9 @@ class TaskSerializer(ModelSerializer):
         return obj.calls.filter(state='failed').count()
 
 
+
+
 class BadgeSerializer(ModelSerializer):
     class Meta:
         model = Badge
-        fields = ('id', 'icon', 'name', 'description')
+        fields = ('id', 'icon', 'name', 'description', 'level')
