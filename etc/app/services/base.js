@@ -24,13 +24,19 @@ export default class Base {
         })
     }
 
-    post_(url: string, data: Object): Promise {
-        url += (url.indexOf('?') >= 0 ? '&' : '?') + `_csrf=${getCookie('csrftoken')}`;
+    post_(url: string, data: FormData): Promise {
+
+        data.append('csrfmiddlewaretoken', getCookie('csrftoken'));
 
         return new Promise((resolve, reject) => {
-            $.post(url, data, null, 'json')
-                .done(resolve)
-                .fail(reject);
+
+            var oReq = new XMLHttpRequest();
+            oReq.open("POST", url);
+
+            oReq.addEventListener("load", _ => resolve(JSON.parse(oReq.responseText)));
+            oReq.addEventListener("error", _ => reject());
+
+            oReq.send(data);
         })
     }
 }

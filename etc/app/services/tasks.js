@@ -29,4 +29,8 @@ export default new class extends base {
     post(data): Promise {
         return this.post_('/api/tasks/', data);
     }
+
+    complete(id, data): Promise {
+        return this.post_(`/api/tasks/${id}/complete/`, data);
+    }
 }

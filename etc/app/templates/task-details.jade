@@ -1,9 +1,27 @@
+include _task
+
 .dialog
     .dlg--header
         span.close-me.fa.fa-times-circle.fa-5
         h2= model.summary
+
     .dlg--content
-        p= model.description
-        button.btn.btn-xs.btn-primary(data-href="/task/#{model.id}/accept") Go for it
-        button.btn.btn-xs(data-href="/task/#{model.id}/reject") Dismiss
+        +TaskCard(model)
+
+        if !model.call
+            button.btn.btn-xs.btn-primary(data-href="/task/#{model.id}/accept") Go for it
+            button.btn.btn-xs(data-href="/task/#{model.id}/reject") Dismiss
+
+        else if model.call.state === 'accepted'
+            form(data-action="/task/#{model.id}/complete")
+                input.form-control(type="file" required)
+                br
+                input(type="submit" value="Send")
+
+        else if task.call.state === 'complete'
+            | Verification is pending
+
+        else
+            | Your task is #{task.call.state}
+
     .dlg--footer

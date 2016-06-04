@@ -1,5 +1,5 @@
 import $ from 'lib/jquery'
-import {navigate} from 'lib/controller'
+import {navigate, dispatchFormData} from 'lib/controller'
 
 import btAlerts from 'bootstrap/alert'
 
@@ -23,7 +23,11 @@ $(() => {
         })
         .on('submit', '[data-action]', e => {
             e.preventDefault();
-            navigate($(e.target).data('action') + '?' + $(e.target).serialize());
+            try {
+                dispatchFormData($(e.target).data('action'), new FormData(e.target));
+            } catch (e) {
+                console.error(e);
+            }
         })
         .on('click', '.dialog .close-me', e => {
             e.preventDefault();

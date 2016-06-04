@@ -19,7 +19,9 @@ export default class extends base {
     save(ctx) {
         this.freeze();
 
-        tasks.post(ctx.querystring)
+        console.log('formData in context', ctx.formData);
+
+        tasks.post(ctx.formData)
             .then(_ => this.update())
             .then(_ => this.navigate("/"))
     }
@@ -71,6 +73,14 @@ export default class extends base {
         this.freeze();
 
         tasks.reject(ctx.params.id)
+            .then(_ => this.navigate('/task/feed'));
+    }
+
+    @route('/task/:id/complete')
+    complete(ctx) {
+        this.freeze();
+
+        tasks.complete(ctx.params.id, ctx.formData)
             .then(_ => this.navigate('/task/feed'));
     }
 }

@@ -35,7 +35,7 @@ export default new class extends base {
 
     constructor() {
         super();
-        _start(this);
+        //_start(this);
     }
 
     on(cb: Function<void, Array>): void {

@@ -5,8 +5,13 @@ mixin TaskCard(task)
                 .category(class=task.category)
             .col-xs-9
                 strong= task.author.username
+
                 div
                     if task.summary
                         b= task.summary
                         | &nbsp;
                     small= task.description
+
+                    if task.call
+                        i= task.call.state
+
