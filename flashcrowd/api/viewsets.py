@@ -12,7 +12,7 @@ from rest_framework.decorators import list_route, detail_route
 import serializers
 import permissions
 from flashcrowd.users.models import CustomUser
-from flashcrowd.core.models import Task, Call, Badge, Event, Category, UserBadge
+from flashcrowd.core.models import Task, Call, Badge, Event, Category, UserBadge, Bookmark
 from django.utils.timezone import datetime
 import pytz
 
@@ -119,6 +119,12 @@ class TasksViewSet(ModelViewSet):
             ('finished_tasks', reverse('task-finished-tasks', request=self.request)),
         )), status=400)
 
+    @list_route(permission_classes=[IsAuthenticated])
+    def add_to_bookmark(self, request, pk):
+        task = get_object_or_404(Task, pk=pk, task__author=request.user)
+        Bookmark.objects.create_new()
+
+
 
 class CallsViewSet(ModelViewSet):
     serializer_class = serializers.CallSerializer
@@ -208,3 +214,11 @@ class UserBadgesViewSet(ModelViewSet):
                 except TypeError as e:
                     print "error!  i know - very informative. probably bad validation badge id {}. error is {}".format(badge.id, e)
         return UserBadge.objects.filter(user=user)
+
+
+class BookmarksViewSet(ModelViewSet):
+    serializer_class = serializers.BookmarksSerializer
+    permission_classes = [permissions.BookmarksModelPermission]
+
+    def get_queryset(self):
+        return Bookmark.objects.filter(user=self.request.user.id)

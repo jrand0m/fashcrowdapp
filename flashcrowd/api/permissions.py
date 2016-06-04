@@ -81,3 +81,11 @@ class CategoryModelPermission(BasePermission):
         return True
 
 
+class BookmarksModelPermission(BasePermission):
+    def has_permission(self, request, view):
+        #TODO
+        return True
+
+    def has_object_permission(self, request, view, obj):
+        # TODO
+        return True

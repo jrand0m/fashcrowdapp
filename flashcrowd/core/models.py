@@ -168,3 +168,9 @@ class Event(models.Model):
         for target_user in target_users:
             event.target_users.add(target_user)
 
+
+class Bookmark(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, blank=False, related_name='bookmarks')
+    task = models.ForeignKey('Task', null=False, blank=False, related_name='bookmarks')
+
+
