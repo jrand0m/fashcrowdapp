@@ -9,8 +9,8 @@ class UserSerializer(ModelSerializer):
         fields = ('id', 'url', 'username', 'first_name', 'last_name', 'photo', 'points')
         #fields = ('id', 'url', 'username', 'first_name', 'last_name', 'photo', 'points', 'badges_earned')
 
-    #badges_earned = SerializerMethodField()
-    #badges = BadgeSerializer(many=True, read_only=True)
+
+    #badges_earned = BadgeSerializer(many=True, read_only=True, query_set=Badge.objects.filter('awarded_badge'))
 
     def badges_earned(self, obj):
         #TODO mike: dont know how not to include all badges
