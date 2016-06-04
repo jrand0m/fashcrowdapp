@@ -73,6 +73,13 @@ class TasksViewSet(ModelViewSet):
         return Response(serializers.TaskSerializer(instance=task, context=dict(request=request)).data)
 
     @list_route(permission_classes=[IsAuthenticated])
+    def created_tasks(self, request):
+        queryset = Task.objects.filter(author=self.request.user).order_by(
+            'date_created'
+        )
+        return Response(serializers.TaskSerializer(instance=queryset, many=True, context=dict(request=self.request)).data)
+
+    @list_route(permission_classes=[IsAuthenticated])
     def available_tasks(self, request):
         called_tasks = [x.task_id for x in Call.objects.filter(executor=self.request.user)]
         queryset = Task.objects.exclude(author=self.request.user).exclude(id__in=called_tasks).order_by('date_created')
@@ -96,6 +103,7 @@ class TasksViewSet(ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         return Response(OrderedDict((
+            ('created_tasks', reverse('task-created-tasks', request=self.request)),
             ('available_tasks', reverse('task-available-tasks', request=self.request)),
             ('active_tasks', reverse('task-active-tasks', request=self.request)),
             ('finished_tasks', reverse('task-finished-tasks', request=self.request)),

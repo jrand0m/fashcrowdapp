@@ -37,23 +37,25 @@ class CallSerializer(ModelSerializer):
         model = Call
         fields = ('id', 'date_decided', 'state', 'proof', 'task', 'executor')
 
-    # task = SerializerMethodField()
+    task = SerializerMethodField()
 
     # task = TaskSerializer(many=False)
 
-    task = HyperlinkedRelatedField(view_name='task-detail', read_only=True)
+    # task = HyperlinkedRelatedField(view_name='task-detail', read_only=True)
     executor = UserSerializer(many=False)
 
     # def get_task(self, obj):
     #     return TaskSerializer(instance=obj.task, many=False).data
+    def get_task(self, obj):
+        return DeepTaskSerializer(instance=obj.task, many=False, context=self.context).data
 
 
 class TaskSerializer(ModelSerializer):
     class Meta:
         model = Task
         fields = (
-            'id', 'url', 'category', 'description', 'date_created', 'date_deadline', 'bounty', 'author', 'calls', 'summary',
-            'calls_total', 'calls_accepted', 'calls_completed', 'calls_succeeded', 'calls_failed'
+            'id', 'url', 'category', 'description', 'date_created', 'date_deadline', 'bounty', 'author', 'is_author',
+            'call', 'calls', 'summary', 'calls_total', 'calls_accepted', 'calls_completed', 'calls_succeeded', 'calls_failed'
         )
         read_only_fields = ('id', 'url', 'date_created', 'author', 'calls', 'calls_total')
 
@@ -69,10 +71,15 @@ class TaskSerializer(ModelSerializer):
     calls_succeeded = SerializerMethodField(read_only=True)
     calls_failed = SerializerMethodField(read_only=True)
 
+    calls = HyperlinkedRelatedField(view_name='call-detail', read_only=True, many=True)
+
     # calls = SerializerMethodField()
 
     # calls = CallSerializer(instance=Call.objects.order_by('date_decided'), many=True)
-    calls = CallSerializer(many=True, read_only=True)
+    # calls = CallSerializer(many=True, read_only=True)
+
+    is_author = SerializerMethodField(read_only=True)
+    call = SerializerMethodField(read_only=True)
 
     def get_calls_total(self, obj):
         return obj.calls.count()
@@ -89,6 +96,14 @@ class TaskSerializer(ModelSerializer):
     def get_calls_failed(self, obj):
         return obj.calls.filter(state='failed').count()
 
+    def get_is_author(self, obj):
+        return obj.author.id == self.context['request'].user.id
+
+    def get_call(self, obj):
+        call = Call.objects.filter(executor=self.context['request'].user, task=obj).first()
+        if not call:
+            return None
+        return DeepCallSerializer(instance=call, many=False, context=self.context).data
 
 
 class BadgeSerializer(ModelSerializer):
@@ -108,3 +123,10 @@ class EventSerializer(ModelSerializer):
         epoch = datetime.utcfromtimestamp(0)
         return int((obj.date_created.replace(tzinfo=None) - epoch).total_seconds() * 1000000)
         # return int(time.mktime(obj.date_created.timetuple()) * 1000)
+
+
+class DeepTaskSerializer(TaskSerializer):
+    calls = HyperlinkedRelatedField(view_name='call-detail', read_only=True, many=True)
+
+class DeepCallSerializer(CallSerializer):
+    task = HyperlinkedRelatedField(view_name='task-detail', read_only=True)
