@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import APIException
 from rest_framework.permissions import IsAuthenticated
@@ -93,10 +95,11 @@ class TasksViewSet(ModelViewSet):
         return Response(serializers.TaskSerializer(instance=queryset, many=True, context=dict(request=self.request)).data)
 
     def list(self, request, *args, **kwargs):
-        return Response(dict(
-            available_tasks=reverse('task-available-tasks', request=self.request),
-            posted_tasks=reverse('task-posted-tasks', request=self.request),
-        ), status=400)
+        return Response(OrderedDict((
+            ('available_tasks', reverse('task-available-tasks', request=self.request)),
+            ('active_tasks', reverse('task-active-tasks', request=self.request)),
+            ('finished_tasks', reverse('task-finished-tasks', request=self.request)),
+        )), status=400)
 
 
 class CallsViewSet(ModelViewSet):
