@@ -13,6 +13,7 @@ class Task(models.Model):
     date_deadline = models.DateTimeField(default=None, null=True, blank=True)
     bounty = models.PositiveIntegerField(null=False, blank=False)
 
+
     # Nope. Too time-consuming. Not today.
     # @classmethod
     # def new(cls, author, bounty, deadline=None):
@@ -67,6 +68,7 @@ class Badge(models.Model):
     icon = models.ImageField(upload_to='badges', blank=False, null=False)
     name = models.CharField('badge name', max_length=120, blank=False, null=False)
     description = models.CharField('badge description', max_length=300, blank=True, null=False)
+    level = models.IntegerField('badge level', null=False, blank=False, default=1)
     # Nope. Too time-consuming. Not today.
     # @classmethod
     # def new(cls, author, bounty, deadline=None):
@@ -80,7 +82,7 @@ class Badge(models.Model):
         return self.__unicode__()
 
     def __unicode__(self):
-        return u'{} badge'.format(self.name)
+        return u'{} badge(lvl:{})'.format(self.name, self.level)
 
 
 class UserBadge(models.Model):
@@ -101,7 +103,7 @@ class UserBadge(models.Model):
         return self.__unicode__()
 
     def __unicode__(self):
-        return u'{}\'s {} badge'.format(self.user.username, self.badge.name)
+        return u'{}\'s {} badge (lvl:{})'.format(self.user.username, self.badge.name, self.badge.level)
 
 
 class Event(models.Model):

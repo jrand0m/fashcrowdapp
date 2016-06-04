@@ -10,7 +10,7 @@
             {
                 test: /\.js$/,
                 exclude: /(node_modules|bower)/,
-                loader: "babel?presets[]=es2015&plugins[]=babel-plugin-transform-decorators-legacy"
+                loader: "babel?presets[]=es2015&plugins[]=transform-decorators-legacy&plugins[]=transform-flow-strip-types"
             }
         ]
     },

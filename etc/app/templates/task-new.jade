@@ -1,0 +1,17 @@
+//
+   Created by admin on 6/4/16.
+
+
+form(data-action="/task/save" role="form")
+    .form-group
+        label(for="deadline") Deadline:
+        input.form-control#deadline(type="datetime" name="deadline" value=model.dealine)
+    .form-group
+        label(for="bounty") Bounty:
+        input.form-control#bounty(type="number" min=0 required name="bounty" value=model.bounty)
+    .form-group
+        label(for="description") Description:
+        br
+        textarea.form-control#description(required name="description")= model.description
+
+    button.btn.btn-lg.btn-default.btn-success(type="submit") Save
