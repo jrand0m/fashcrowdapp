@@ -8,5 +8,6 @@ etc/app/bower/
 flashcrowd/static/*.js
 flashcrowd/static/*.map
 flashcrowd/static/*.css
+flashcrowd/static/fonts/
 *.sqlite3
 flashcrowd/media

@@ -1,0 +1,14 @@
+include _task
+
+header
+    .input-group
+        input.form-control(name="filter" type="text" placeholder="Just type a keyword")
+        span.glyphicon.glyphicon-search.input-group-addon
+
+
+if !model.length
+    h2(style="text-align: center") Whops! Nothing here so far :-(
+
+
+each task in model
+    +TaskCard(task)

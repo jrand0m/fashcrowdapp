@@ -1,8 +1,20 @@
-from rest_framework.serializers import ModelSerializer, SerializerMethodField, HyperlinkedRelatedField
+from rest_framework.serializers import ModelSerializer, SerializerMethodField, HyperlinkedRelatedField, RelatedField, SlugRelatedField
 from flashcrowd.users.models import CustomUser
 from flashcrowd.core.models import Task, Call, Badge, UserBadge, Event, Category
 from django.utils.timezone import datetime
 import time
+
+
+class CategorySerializer(ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('id', 'name', 'description', 'icon')
+
+    def to_representation(self, instance):
+        return dict(
+            id="",
+            name=""
+        )
 
 
 class UserSerializer(ModelSerializer):
@@ -40,12 +52,16 @@ class TaskSerializer(ModelSerializer):
     class Meta:
         model = Task
         fields = (
-            'id', 'url', 'description', 'date_created', 'date_deadline', 'bounty', 'author', 'calls', 'summary',
+            'id', 'url', 'category', 'description', 'date_created', 'date_deadline', 'bounty', 'author', 'calls', 'summary',
             'calls_total', 'calls_accepted', 'calls_completed', 'calls_succeeded', 'calls_failed'
         )
         read_only_fields = ('id', 'url', 'date_created', 'author', 'calls', 'calls_total')
 
     author = UserSerializer(many=False, read_only=True)
+    category = SlugRelatedField(slug_field='slug', read_only=False, queryset=Category.objects.all())
+
+    # category = CategorySerializer(many=False)
+    # category = RelatedField(queryset=Category.objects.all())
 
     calls_total = SerializerMethodField(read_only=True)
     calls_accepted = SerializerMethodField(read_only=True)
@@ -91,11 +107,5 @@ class EventSerializer(ModelSerializer):
         epoch = datetime.utcfromtimestamp(0)
         return int((obj.date_created.replace(tzinfo=None) - epoch).total_seconds() * 1000000)
         # return int(time.mktime(obj.date_created.timetuple()) * 1000)
-
-
-class CategorySerializer(ModelSerializer):
-    class Meta:
-        model = Category
-        fields = ('id', 'name', 'description', 'icon')
 
 

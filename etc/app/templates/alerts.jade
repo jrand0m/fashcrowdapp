@@ -1,0 +1,6 @@
+each alert in model
+    .alert.fade.in(class="alert-#{alert.style}")
+        a.close(href="#" data-dismiss="alert" aria-label="close") &times;
+        strong #{alert.style}!
+        | &nbsp;
+        = alert.message

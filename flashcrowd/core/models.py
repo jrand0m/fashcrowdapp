@@ -7,8 +7,15 @@ from django.utils.timezone import now
 
 class Category(models.Model):
     name = models.CharField(max_length=32, null=False, blank=False)
+    slug = models.CharField(max_length=32, null=True, blank=True)
     description = models.CharField(max_length=160, null=False, blank=False)
     icon = models.ImageField(upload_to='category', blank=False, null=False)
+
+    def __repr__(self):
+        return self.__unicode__()
+
+    def __unicode__(self):
+        return u'{} - {}'.format(self.name, self.description or 'No description')
 
 
 # @staticmethod
