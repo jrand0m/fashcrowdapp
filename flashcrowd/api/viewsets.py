@@ -9,8 +9,9 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import list_route, detail_route
 import serializers
 import permissions
+import sys
 from flashcrowd.users.models import CustomUser
-from flashcrowd.core.models import Task, Call, Badge, Event, Category
+from flashcrowd.core.models import Task, Call, Badge, Event, Category, UserBadge
 from django.utils.timezone import datetime
 import pytz
 
@@ -119,11 +120,8 @@ class CallsViewSet(ModelViewSet):
 class BadgesViewSet(ModelViewSet):
     serializer_class = serializers.BadgeSerializer
     permission_classes = [permissions.BadgeModelPermission]
+    queryset = Badge.objects.all()
 
-    def get_queryset(self):
-        print self.request
-        print dir(self)
-        return Badge.objects.all()
 
 
 class EventsViewSet(ModelViewSet):
@@ -146,3 +144,23 @@ class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     permission_classes = [permissions.CategoryModelPermission]
 
+
+class UserBadgesViewSet(ModelViewSet):
+    serializer_class = serializers.UserBadgesSerializer
+    permission_classes = [permissions.UserBadgeModelPermission]
+
+    def get_queryset(self):
+        user = self.request.user
+        all_badges = Badge.objects.all()
+        user_calls = Call.objects.filter(executor=user.id)
+        user_tasks = Task.objects.filter(id__in=[call.task.id for call in user_calls])
+        exclude_badges_list = UserBadge.objects.filter(user=user.id)
+
+        for badge in all_badges:
+            if badge not in exclude_badges_list:
+                try:
+                    if eval(badge.validator, globals(), locals()):
+                        UserBadge.objects.create(user=user, badge=badge, award_date=datetime.now())
+                except TypeError as e:
+                    print "error!  i know - very informative. probably bad validation badge id {}. error is {}".format(badge.id, e)
+        return UserBadge.objects.filter(user=user)

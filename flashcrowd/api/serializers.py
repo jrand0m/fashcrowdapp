@@ -129,3 +129,10 @@ class DeepTaskSerializer(TaskSerializer):
 
 class DeepCallSerializer(CallSerializer):
     task = HyperlinkedRelatedField(view_name='task-detail', read_only=True)
+
+
+class UserBadgesSerializer(TaskSerializer):
+
+    class Meta:
+        model = UserBadge
+        fields = ('id', 'user', 'badge', 'award_date')
