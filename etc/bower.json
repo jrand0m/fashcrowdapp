@@ -10,7 +10,8 @@
   "dependencies": {
     "jquery": "~2.1.4",
     "bootstrap-sass": "^3.3.6",
-    "page": "visionmedia/page.js#^1.7.1"
+    "page": "visionmedia/page.js#^1.7.1",
+    "font-awesome": "^4.6.3"
   },
   "devDependencies": {},
   "license": "MIT"

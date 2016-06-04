@@ -1,12 +1,13 @@
 import base, {route} from './base'
 
 import tasks from 'services/tasks'
+import calls from 'services/calls'
 
 import TaskForm from 'templates/task-new.jade'
 import TaskFeed from 'templates/task-feed.jade'
 import TaskDetails from 'templates/task-details.jade'
-import TaskActive from 'templates/task-active.jade'
 import Tasks from 'templates/tasks.jade'
+import Calls from 'templates/calls.jade'
 
 export default class extends base {
 
@@ -19,7 +20,9 @@ export default class extends base {
     save(ctx) {
         this.freeze();
 
-        tasks.post(ctx.querystring)
+        console.log('formData in context', ctx.formData);
+
+        tasks.post(ctx.formData)
             .then(_ => this.update())
             .then(_ => this.navigate("/"))
     }
@@ -36,8 +39,8 @@ export default class extends base {
     my() {
         this.freeze();
 
-        tasks.get_active()
-            .then(_ => this.push(Tasks, _))
+        tasks.get_created()
+            .then(_ => this.push(Tasks, _, {tab: 'my'}))
     }
 
     @route('/task/active')
@@ -45,7 +48,7 @@ export default class extends base {
         this.freeze();
 
         tasks.get_active()
-            .then(_ => this.push(TaskActive, _))
+            .then(_ => this.push(Tasks, _, {tab: 'active'}))
     }
 
     @route('/task/:id/details')
@@ -72,5 +75,37 @@ export default class extends base {
 
         tasks.reject(ctx.params.id)
             .then(_ => this.navigate('/task/feed'));
+    }
+
+    @route('/task/:id/complete')
+    complete(ctx) {
+        this.freeze();
+
+        tasks.complete(ctx.params.id, ctx.formData)
+            .then(_ => this.navigate('/task/active'));
+    }
+
+    @route('/calls')
+    calls(ctx) {
+        this.freeze();
+
+        calls.get()
+            .then(_ => this.push(Calls, _));
+    }
+
+    @route('/call/:id/approve')
+    approve(ctx) {
+        this.freeze();
+
+        calls.approve(ctx.params.id)
+            .then(_ => this.navigate('/calls'));
+    }
+
+    @route('/call/:id/decline')
+    decline(ctx) {
+        this.freeze();
+
+        calls.decline(ctx.params.id)
+            .then(_ => this.navigate('/calls'));
     }
 }

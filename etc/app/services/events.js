@@ -1,7 +1,7 @@
 import base from './base';
 
 var handlers = [],
-    timestamp = 0,
+    timestamp = (new Date).getTime() * 1000,
     delay_min = 557,
     delay_max = 10000,
     delay = delay_min;

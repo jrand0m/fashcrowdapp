@@ -1,0 +1,31 @@
+
+header
+    nav.nav.nav-pills
+        li(role="presentation"): a(data-href="/task/active") Accepted
+        li(role="presentation"): a(data-href="/task/saved") Saved
+        li(role="presentation"): a(data-href="/task/my") My
+        li(role="presentation"): a(data-href="/calls").active Calls
+
+if !model.length
+    h2(style="text-align: center") Whops! Nothing here so far :-(
+
+each call in model
+    .calls
+        .row
+            .col-xs-3
+                img(width=64 height=64 src=call.proof)
+            .col-xs-9
+                div
+                    if call.task.summary
+                        b= call.task.summary
+                        | &nbsp;
+
+                    i= call.state
+                    | &nbsp; by &nbsp;
+
+                    = call.executor.username
+
+                    if call.state === 'completed'
+                        .btn-group
+                            button.btn.btn-xs.btn-primary.btn-success(data-href="/call/#{call.id}/approve") Approve
+                            button.btn.btn-xs.btn-danger(data-href="/call/#{call.id}/decline") Decline

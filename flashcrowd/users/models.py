@@ -19,3 +19,8 @@ class CustomUser(AbstractUser):
     date_points_replenished = models.DateTimeField(default=now, null=False, blank=False)
 
     USERNAME_FIELD = 'username'
+
+    def grant_points(self, points):
+        self.points += points
+        self.points_original += points
+        self.save()

@@ -1,9 +1,34 @@
+include _task
+
 .dialog
     .dlg--header
         span.close-me.fa.fa-times-circle.fa-5
         h2= model.summary
+
     .dlg--content
-        p= model.description
-        button.btn.btn-xs.btn-primary(data-href="/task/#{model.id}/accept") Go for it
-        button.btn.btn-xs(data-href="/task/#{model.id}/reject") Dismiss
+        +TaskCard(model)
+
+        div(style="margin-top:15px")
+            if model.is_author
+                button.btn.btn-xs()
+                    i.fa.fa-edit
+                    | Edit
+
+            else if !model.call
+                button.btn.btn-xs.btn-primary(data-href="/task/#{model.id}/accept") Go for it
+                button.btn.btn-xs(data-href="/task/#{model.id}/reject") Dismiss
+
+            else if model.call.state === 'accepted'
+                form(data-action="/task/#{model.id}/complete")
+                    input.form-control(type="file" name="proof" required)
+                    br
+                    input.btn.btn-md.btn-primary.btn-default(type="submit" value="Send")
+
+            else if model.call.state === 'completed'
+                | Verification is pending
+
+            else
+                | Your task is #{model.call.state}
+
+
     .dlg--footer

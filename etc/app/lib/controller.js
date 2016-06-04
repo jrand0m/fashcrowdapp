@@ -22,5 +22,18 @@ export function Route(path: string) {
 }
 
 export function navigate(path) {
-    page(path.match(/^\/app/) ? path : '/app' + path);
+    page.redirect(path.match(/^\/app/) ? path : '/app' + path);
+}
+
+var fd = null;
+
+page('*', (ctx, next) => {
+    ctx.formData = fd;
+    fd = null;
+    next();
+});
+
+export function dispatchFormData(path, formData) {
+    fd = formData;
+    navigate(path);
 }

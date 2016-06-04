@@ -2,6 +2,8 @@ from collections import OrderedDict
 
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import APIException
+from rest_framework.parsers import FormParser
+from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -9,7 +11,6 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import list_route, detail_route
 import serializers
 import permissions
-import sys
 from flashcrowd.users.models import CustomUser
 from flashcrowd.core.models import Task, Call, Badge, Event, Category, UserBadge
 from django.utils.timezone import datetime
@@ -43,6 +44,8 @@ class TasksViewSet(ModelViewSet):
             call = Call(task=task, executor=request.user, state='accepted' if is_accept else 'rejected')
             call.save()
 
+            Event.create_new('task_accepted' if is_accept else 'task_rejected', [task.author])
+
         return Response(serializers.TaskSerializer(instance=task, context=dict(request=request)).data)
 
     @detail_route(permission_classes=[IsAuthenticated])
@@ -53,9 +56,12 @@ class TasksViewSet(ModelViewSet):
     def reject(self, request, pk):
         return self.accept_or_reject(request, pk, False)
 
-    @detail_route(permission_classes=[IsAuthenticated])
+    @detail_route(permission_classes=[IsAuthenticated], parser_classes=[FormParser, MultiPartParser], methods=['POST'])
     def complete(self, request, pk):
         task = get_object_or_404(Task, pk=pk)
+        proof = request.FILES.get('proof')
+        if not proof:
+            raise APIException('Missing proof image!')
 
         call = Call.objects.filter(task=task, executor=request.user).first()
 
@@ -68,8 +74,11 @@ class TasksViewSet(ModelViewSet):
             ))
 
         # TODO: Store proof image here
-        # call.state = 'completed'
+        call.state = 'completed'
+        call.proof.save(proof.name, proof)
         call.save()
+
+        Event.create_new('task_completed', [task.author])
 
         return Response(serializers.TaskSerializer(instance=task, context=dict(request=request)).data)
 
@@ -113,15 +122,50 @@ class TasksViewSet(ModelViewSet):
 
 class CallsViewSet(ModelViewSet):
     serializer_class = serializers.CallSerializer
-    queryset = Call.objects.all()
     permission_classes = [permissions.CallModelPermission]
+
+    def get_queryset(self):
+        return Call.objects.filter(task__author=self.request.user, state='completed')
+
+    @detail_route(permission_classes=[IsAuthenticated])
+    def approve(self, request, pk):
+        call = get_object_or_404(Call, pk=pk, task__author=request.user)
+
+        if call.state != 'completed':
+            raise APIException('Cannot approve task if call state is "{}" (must be "completed").'.format(
+                call.state
+            ))
+
+        call.state = 'won'
+        call.save()
+
+        call.executor.grant_points(call.task.get_final_bounty())
+
+        Event.create_new('proof_accepted', [call.executor])
+
+        return Response(serializers.CallSerializer(instance=call, many=False, context=dict(request=request)).data)
+
+    @detail_route(permission_classes=[IsAuthenticated])
+    def decline(self, request, pk):
+        call = get_object_or_404(Call, pk=pk, task__author=request.user)
+
+        if call.state != 'completed':
+            raise APIException('Cannot decline task if call state is "{}" (must be "completed").'.format(
+                call.state
+            ))
+
+        call.state = 'lost'
+        call.save()
+
+        Event.create_new('proof_rejected', [call.executor])
+
+        return Response(serializers.CallSerializer(instance=call, many=False, context=dict(request=request)).data)
 
 
 class BadgesViewSet(ModelViewSet):
     serializer_class = serializers.BadgeSerializer
     permission_classes = [permissions.BadgeModelPermission]
     queryset = Badge.objects.all()
-
 
 
 class EventsViewSet(ModelViewSet):

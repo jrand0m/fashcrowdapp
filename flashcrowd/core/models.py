@@ -50,7 +50,7 @@ class Task(models.Model):
 
     def get_final_bounty(self):
         # TODO: This will calculate actual badge bounty based on how many users accepted and rejected the task.
-        raise NotImplementedError()
+        return self.bounty
 
 
 class Call(models.Model):
