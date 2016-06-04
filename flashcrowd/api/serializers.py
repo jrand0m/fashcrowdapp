@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, HyperlinkedRelatedField
 from flashcrowd.users.models import CustomUser
-from flashcrowd.core.models import Task, Call, Badge, UserBadge, Event
+from flashcrowd.core.models import Task, Call, Badge, UserBadge, Event, Category
 from django.utils.timezone import datetime
 import time
 
@@ -93,3 +93,10 @@ class EventSerializer(ModelSerializer):
         epoch = datetime.utcfromtimestamp(0)
         return int((obj.date_created.replace(tzinfo=None) - epoch).total_seconds() * 1000000)
         # return int(time.mktime(obj.date_created.timetuple()) * 1000)
+
+class CategorySerializer(ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('id', 'name', 'description', 'icon')
+
+

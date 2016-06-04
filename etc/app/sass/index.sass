@@ -1,4 +1,10 @@
+$icon-font-path: "/static/fonts/bootstrap/"
+
 @import "../bower/bootstrap-sass/assets/stylesheets/bootstrap"
+
+$fa-font-path: "/static/fonts"
+
+@import "../bower/font-awesome/scss/font-awesome"
 
 footer
   position: fixed
@@ -10,7 +16,22 @@ footer
   background: transparentize(red, .9)
   z-index: 1001
 
-#page-cnt
+header
+  background: transparentize(blueviolet, .5)
+  margin: -15px
+  padding: 15px
+  margin-bottom: 15px
+  position: relative
+  z-index: 0
+
+#alerts
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  z-index: 10001
+
+#page-cnt, .dialog
   overflow: scroll
   margin-bottom: 38px
   background: #fafafa
@@ -28,3 +49,26 @@ footer
     bottom: 0
     background: transparentize(#aaa, .3)
     z-index: 1000
+
+.task + .task
+  margin-top: 15px
+
+.dialog
+  padding: 15px
+  position: fixed
+  background: transparentize(white, .1)
+  top: 0
+  left: 0
+  right: 0
+
+  .dlg--content, .dlg--header, .dlg--footer
+    background: #fff
+
+  .dlg--content
+    padding: 15px
+
+.dlg--header
+
+  .close-me
+    float: right
+

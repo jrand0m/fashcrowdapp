@@ -1,8 +1,15 @@
+if !model.length
+    h2(style="text-align: center") Whops! Nothing here so far :-(
+
 
 each task in model
     .row.task
         .col-xs-3
             img(width=64 height=64 src=task.author.photo)
         .col-xs-9
-            h3= task.author.username
-            p= task.description
+            h5= task.author.username
+            p
+                if task.summary
+                    b= task.summary
+                    | &nbsp;
+                = task.description

@@ -11,12 +11,18 @@ export default class {
     }
 
     push(tpl, data) {
-        var html = $.parseHTML(tpl({model: data}));
-        $('#page-cnt').html(html).removeClass('freeze');
+        $('#page-cnt')
+            .html($.parseHTML(tpl({model: data})))
+            .removeClass('freeze');
     }
 
     update() {
         $('#page-cnt').removeClass('freeze');
+    }
+
+    shade(tpl, data) {
+        $($.parseHTML(tpl({model: data})))
+            .appendTo($('#page-cnt').removeClass('freeze'));
     }
 
     navigate(path: string) {

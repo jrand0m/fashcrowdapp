@@ -5,8 +5,20 @@ from django.conf import settings
 from django.utils.timezone import now
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=32, null=False, blank=False)
+    description = models.CharField(max_length=160, null=False, blank=False)
+    icon = models.ImageField(upload_to='category', blank=False, null=False)
+
+
+# @staticmethod
+def get_default_category():
+    return Category.objects.first().id
+
+
 class Task(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, blank=False, related_name='authored_tasks')
+    category = models.ForeignKey(Category, default=get_default_category, null=False, blank=False, related_name='category_tasks')
     description = models.TextField(null=False, blank=False)
     summary = models.TextField(null=False, blank=False, default='')
     date_created = models.DateTimeField(default=now, null=False, blank=False)
@@ -147,3 +159,4 @@ class Event(models.Model):
         event.save()
         for target_user in target_users:
             event.target_users.add(target_user)
+

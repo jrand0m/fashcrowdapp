@@ -1,0 +1,23 @@
+header
+    .input-group
+        input.form-control(name="filter" type="text" placeholder="Just type a keyword")
+        span.glyphicon.glyphicon-search.input-group-addon
+
+
+if !model.length
+    h2(style="text-align: center") Whops! Nothing here so far :-(
+
+
+each task in model
+    .task
+        .row
+            .col-xs-3
+                img(width=64 height=64 src=task.author.photo)
+            .col-xs-9
+                strong= task.author.username
+                div
+                    if task.summary
+                        b= task.summary
+                        | &nbsp;
+                    small= task.description
+                button.btn.btn-xs.btn-primary(data-href="/task/#{task.id}/details/") Details
