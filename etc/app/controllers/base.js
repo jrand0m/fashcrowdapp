@@ -2,6 +2,20 @@ import {Route, navigate} from 'lib/controller'
 
 import $ from 'lib/jquery'
 
+function merge() {
+    var x = {};
+    [].slice
+        .call(arguments)
+        .filter(_ => _)
+        .forEach(obj => {
+            Object.keys(obj).forEach(key => {
+                x[key] = x[key] || obj[key];
+            })
+        });
+
+    return x;
+}
+
 export const route = Route;
 
 export default class {
@@ -10,9 +24,9 @@ export default class {
         $('#page-cnt').addClass('freeze');
     }
 
-    push(tpl, data) {
+    push(tpl, data, extra?) {
         $('#page-cnt')
-            .html($.parseHTML(tpl({model: data})))
+            .html($.parseHTML(tpl(merge({model: data}, extra))))
             .removeClass('freeze');
     }
 
@@ -20,8 +34,8 @@ export default class {
         $('#page-cnt').removeClass('freeze');
     }
 
-    shade(tpl, data) {
-        $($.parseHTML(tpl({model: data})))
+    shade(tpl, data, extra?) {
+        $($.parseHTML(tpl(merge({model: data}, extra))))
             .appendTo($('#page-cnt').removeClass('freeze'));
     }
 

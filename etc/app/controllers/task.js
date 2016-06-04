@@ -1,12 +1,13 @@
 import base, {route} from './base'
 
 import tasks from 'services/tasks'
+import calls from 'services/calls'
 
 import TaskForm from 'templates/task-new.jade'
 import TaskFeed from 'templates/task-feed.jade'
 import TaskDetails from 'templates/task-details.jade'
-import TaskActive from 'templates/task-active.jade'
 import Tasks from 'templates/tasks.jade'
+import Calls from 'templates/calls.jade'
 
 export default class extends base {
 
@@ -39,7 +40,7 @@ export default class extends base {
         this.freeze();
 
         tasks.get_created()
-            .then(_ => this.push(Tasks, _))
+            .then(_ => this.push(Tasks, _, {tab: 'my'}))
     }
 
     @route('/task/active')
@@ -47,7 +48,7 @@ export default class extends base {
         this.freeze();
 
         tasks.get_active()
-            .then(_ => this.push(TaskActive, _))
+            .then(_ => this.push(Tasks, _, {tab: 'active'}))
     }
 
     @route('/task/:id/details')
@@ -82,5 +83,29 @@ export default class extends base {
 
         tasks.complete(ctx.params.id, ctx.formData)
             .then(_ => this.navigate('/task/feed'));
+    }
+
+    @route('/calls')
+    calls(ctx) {
+        this.freeze();
+
+        calls.get()
+            .then(_ => this.push(Calls, _));
+    }
+
+    @route('/call/:id/approve')
+    approve(ctx) {
+        this.freeze();
+
+        calls.approve(ctx.params.id)
+            .then(_ => this.navigate('/calls'));
+    }
+
+    @route('/call/:id/decline')
+    decline(ctx) {
+        this.freeze();
+
+        calls.decline(ctx.params.id)
+            .then(_ => this.navigate('/calls'));
     }
 }

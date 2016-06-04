@@ -11,9 +11,9 @@ mixin TaskCard(task)
                         b= task.summary
                         | &nbsp;
 
-                        if task.call
-                            i= task.call.state
-                            | &nbsp;
+                    if task.call
+                        i= task.call.state
+                        | &nbsp;
 
                     small= task.description
 
