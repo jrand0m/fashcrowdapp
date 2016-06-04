@@ -33,7 +33,7 @@ class TasksViewSet(ModelViewSet):
             call = Call(task=task, executor=request.user, state='accepted' if is_accept else 'rejected')
             call.save()
 
-        return Response(serializers.CallSerializer(instance=call, context=dict(request=request)).data)
+        return Response(serializers.TaskSerializer(instance=task, context=dict(request=request)).data)
 
     @detail_route(permission_classes=[IsAuthenticated])
     def accept(self, request, pk):
