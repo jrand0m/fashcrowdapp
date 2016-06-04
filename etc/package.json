@@ -8,8 +8,11 @@
     "node-sass": "./node_modules/node-sass/bin/node-sass --output dist app/sass/index.sass --output-style compressed",
     "webpack": "./node_modules/webpack/bin/webpack.js",
     "cpx-jquery": "./node_modules/cpx/bin/index.js \"./app/bower/jquery/dist/*.min.*\" \"./dist\"",
-    "cpx": "./node_modules/cpx/bin/index.js \"./dist/*\" \"./../flashcrowd/static\"",
-    "postinstall": "npm run bower && npm run node-sass && npm run webpack && npm run cpx-jquery && npm run cpx"
+    "cpx-fa": "./node_modules/cpx/bin/index.js \"./app/bower/font-awesome/fonts/*\" \"./dist/fonts\"",
+    "cpx-bt": "./node_modules/cpx/bin/index.js \"./app/bower/bootstrap-sass/assets/fonts/**\" \"./dist/fonts\"",
+    "cpx-all": "npm run cpx-jquery && npm run cpx-fa && npm run cpx-bt",
+    "cpx": "./node_modules/cpx/bin/index.js \"./dist/**\" \"./../flashcrowd/static\"",
+    "postinstall": "npm run bower && npm run node-sass && npm run webpack && npm run cpx-all && npm run cpx"
   },
   "author": "Volodymyr Iatsyshyn <viatsyshyn@gmail.com>",
   "license": "proprietary",

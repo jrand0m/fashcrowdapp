@@ -1,0 +1,9 @@
+.dialog
+    .dlg--header
+        span.close-me.fa.fa-times-circle.fa-4
+        h2= model.summary
+    .dlg--content
+        p= model.description
+        button.btn.btn-xs.btn-primary(data-href="/task/#{model.id}/accept") Go for it
+        button.btn.btn-xs(data-href="/task/#{model.id}/reject") Dismiss
+    .dlg--footer

@@ -18,7 +18,7 @@
         root: __dirname + '/app',
         moduleDirectories: [__dirname + "/app"],
         alias: {
-            "bootstrap": __dirname + "/app/bower/bootstrap-sass/assets/javascripts"
+            "bootstrap": __dirname + "/app/bower/bootstrap-sass/assets/javascripts/bootstrap"
         }
     }
 };
