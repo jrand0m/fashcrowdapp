@@ -1,21 +1,22 @@
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, HyperlinkedRelatedField
 from flashcrowd.users.models import CustomUser
-from flashcrowd.core.models import Task, Call, Badge
+from flashcrowd.core.models import Task, Call, Badge, UserBadge
 
 
 class UserSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('id', 'url', 'username', 'first_name', 'last_name', 'photo', 'points')
+        fields = ('id', 'url', 'username', 'first_name', 'last_name', 'photo', 'points', 'badges_earned')
         #fields = ('id', 'url', 'username', 'first_name', 'last_name', 'photo', 'points', 'badges_earned')
 
-    #badges_earned = SerializerMethodField()
-    #badges = BadgeSerializer(many=True, read_only=True)
+    badges_earned = SerializerMethodField()
+    # badges = BadgeSerializer(many=True, read_only=True, queryset=)
 
-    def badges_earned(self, obj):
+    def get_badges_earned(self, obj):
         #TODO mike: dont know how not to include all badges
-        return obj.badges.filter(state='failed')
-        raise NotImplementedError()
+        user_badge_ids = [ub.badge_id for ub in UserBadge.objects.filter(user=obj)]
+        queryset = Badge.objects.filter(id__in=user_badge_ids)
+        return BadgeSerializer(instance=queryset, context=self.context, many=True).data
         #return obj.calls.filter(state='failed').count()
 
 
@@ -77,9 +78,3 @@ class BadgeSerializer(ModelSerializer):
     class Meta:
         model = Badge
         fields = ('id', 'icon', 'name', 'description')
-
-
-
-
-
-

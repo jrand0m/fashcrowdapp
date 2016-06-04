@@ -90,12 +90,10 @@ class UserBadge(models.Model):
 
     def save(self, *args, **kwargs):
         # Logic comes here
-        super(Task, self).save(*args, **kwargs)
+        super(UserBadge, self).save(*args, **kwargs)
 
     def __repr__(self):
         return self.__unicode__()
 
     def __unicode__(self):
         return u'{}\'s {} badge'.format(self.user.username, self.badge.name)
-
-
