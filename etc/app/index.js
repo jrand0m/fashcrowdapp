@@ -23,11 +23,7 @@ $(() => {
         })
         .on('submit', '[data-action]', e => {
             e.preventDefault();
-            try {
-                dispatchFormData($(e.target).data('action'), new FormData(e.target));
-            } catch (e) {
-                console.error(e);
-            }
+            dispatchFormData($(e.target).data('action'), new FormData(e.target));
         })
         .on('click', '.dialog .close-me', e => {
             e.preventDefault();
@@ -39,7 +35,6 @@ $(() => {
     navigate(window.location.pathname + window.location.search);
 
     events.on(_ => {
-        console.log('events', _);
         $($.parseHTML(Alerts({model: _}))).prependTo('#alerts')
     })
 });
