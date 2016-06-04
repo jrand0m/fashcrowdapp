@@ -1,3 +1,4 @@
+from rest_framework.reverse import reverse
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, HyperlinkedRelatedField, RelatedField, SlugRelatedField
 from flashcrowd.users.models import CustomUser
 from flashcrowd.core.models import Task, Call, Badge, UserBadge, Event, Category
@@ -126,6 +127,13 @@ class EventSerializer(ModelSerializer):
 
 class DeepTaskSerializer(TaskSerializer):
     calls = HyperlinkedRelatedField(view_name='call-detail', read_only=True, many=True)
+
+    def get_call(self, obj):
+        call = Call.objects.filter(executor=self.context['request'].user, task=obj).first()
+        if not call:
+            return None
+        return reverse('call-detail', args=(call.id,), request=self.context['request'])
+
 
 class DeepCallSerializer(CallSerializer):
     task = HyperlinkedRelatedField(view_name='task-detail', read_only=True)

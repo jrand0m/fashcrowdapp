@@ -118,8 +118,28 @@ class TasksViewSet(ModelViewSet):
 
 class CallsViewSet(ModelViewSet):
     serializer_class = serializers.CallSerializer
-    queryset = Call.objects.all()
     permission_classes = [permissions.CallModelPermission]
+
+    def get_queryset(self):
+        return Call.objects.filter(executor=self.request.user, state='completed')
+
+    @detail_route(permission_classes=[IsAuthenticated])
+    def approve(self, request, pk):
+        call = get_object_or_404(Call, pk=pk, task__author=request.user)
+
+        call.state = 'won'
+        call.save()
+
+        return Response(serializers.CallSerializer(instance=call, many=False, context=dict(request=request)).data)
+
+    @detail_route(permission_classes=[IsAuthenticated])
+    def decline(self, request, pk):
+        call = get_object_or_404(Call, pk=pk, task__author=request.user)
+
+        call.state = 'lost'
+        call.save()
+
+        return Response(serializers.CallSerializer(instance=call, many=False, context=dict(request=request)).data)
 
 
 class BadgesViewSet(ModelViewSet):
@@ -127,8 +147,6 @@ class BadgesViewSet(ModelViewSet):
     permission_classes = [permissions.BadgeModelPermission]
 
     def get_queryset(self):
-        print self.request
-        print dir(self)
         return Badge.objects.all()
 
 
