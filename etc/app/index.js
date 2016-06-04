@@ -17,9 +17,9 @@ $(() => {
     $($.parseHTML(Layout(data))).appendTo('body');
 
     $('body')
-        .on('click', '[data-href]', e => {
+        .on('click', '[data-href]', function (e) {
             e.preventDefault();
-            navigate($(e.target).data('href'));
+            navigate($(this).data('href'));
         })
         .on('submit', '[data-action]', e => {
             e.preventDefault();
