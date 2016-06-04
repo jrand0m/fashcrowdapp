@@ -10,6 +10,7 @@ router.register(r'badges', viewsets.BadgesViewSet, base_name='badge')
 router.register(r'events', viewsets.EventsViewSet, base_name='event')
 router.register(r'categories', viewsets.CategoryViewSet, base_name='category')
 router.register(r'userbadges', viewsets.UserBadgesViewSet, base_name='userbadges')
+router.register(r'bookmarks', viewsets.BookmarksViewSet, base_name='bookmark')
 
 urlpatterns = [
     url(r'^', include(router.urls)),

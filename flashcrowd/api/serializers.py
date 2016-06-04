@@ -1,7 +1,7 @@
 from rest_framework.reverse import reverse
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, HyperlinkedRelatedField, RelatedField, SlugRelatedField
 from flashcrowd.users.models import CustomUser
-from flashcrowd.core.models import Task, Call, Badge, UserBadge, Event, Category
+from flashcrowd.core.models import Task, Call, Badge, UserBadge, Event, Category, Bookmark
 from django.utils.timezone import datetime
 import time
 
@@ -139,9 +139,16 @@ class DeepCallSerializer(CallSerializer):
     task = HyperlinkedRelatedField(view_name='task-detail', read_only=True)
 
 
-class UserBadgesSerializer(TaskSerializer):
+class UserBadgesSerializer(ModelSerializer):
     class Meta:
         model = UserBadge
         fields = ('id', 'user', 'badge', 'award_date')
 
     badge = BadgeSerializer(many=False, read_only=True)
+
+
+class BookmarksSerializer(ModelSerializer):
+    class Meta:
+        model = Bookmark
+        fields = ('id', 'user', 'task')
+
