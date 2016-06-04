@@ -7,7 +7,9 @@ from rest_framework.decorators import detail_route
 import serializers
 import permissions
 from flashcrowd.users.models import CustomUser
-from flashcrowd.core.models import Task, Call, Badge
+from flashcrowd.core.models import Task, Call, Badge, Event
+from django.utils.timezone import datetime
+import pytz
 
 
 class UsersViewSet(ModelViewSet):
@@ -74,3 +76,19 @@ class BadgesViewSet(ModelViewSet):
     serializer_class = serializers.BadgeSerializer
     queryset = Badge.objects.all()
     permission_classes = [permissions.BadgeModelPermission]
+
+
+class EventsViewSet(ModelViewSet):
+    serializer_class = serializers.EventSerializer
+    queryset = Event.objects.all()
+    permission_classes = [permissions.EventModelPermission]
+
+    def get_queryset(self):
+        min = float(self.request.GET.get('min', 0)) / 1000000
+        print min
+
+        local_tz = pytz.timezone("Europe/Kiev")
+        utc_dt = datetime.utcfromtimestamp(min).replace(tzinfo=pytz.utc)
+        local_dt = local_tz.normalize(utc_dt.astimezone(local_tz))
+
+        return Event.objects.filter(target_users=self.request.user, date_created__gt=local_dt).order_by('-date_created')

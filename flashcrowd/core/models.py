@@ -102,3 +102,44 @@ class UserBadge(models.Model):
 
     def __unicode__(self):
         return u'{}\'s {} badge'.format(self.user.username, self.badge.name)
+
+
+class Event(models.Model):
+    TYPES = (
+        ('new_task', 'We have a new task for you!'),
+        ('task_accepted', 'Someone accepted your task!'),
+        ('task_rejected', 'Someone rejected your task.'),
+        ('task_completed', 'Someone completed your task!'),
+        ('proof_accepted', 'Congrats! Creator accepted your proof!'),
+        ('proof_rejected', 'Oops... Creator rejected your proof! :(')
+    )
+
+    TYPE_TO_STYLE_MAP = dict(
+        new_task='info',
+        task_accepted='info',
+        task_rejected='info',
+        task_completed='success',
+        proof_accepted='success',
+        proof_rejected='danger'
+    )
+
+    TYPE_TO_MESSAGE_MAP = dict(TYPES)
+
+    type = models.CharField(max_length=32, choices=TYPES, null=False, blank=False)
+    style = models.CharField(max_length=32, default='info', null=False, blank=False)
+    message = models.TextField(null=False, blank=False)
+    target_users = models.ManyToManyField(settings.AUTH_USER_MODEL, null=False, blank=False)
+    date_created = models.DateTimeField(default=now, null=False, blank=False)
+
+    @classmethod
+    def create_new(self, type, target_users):
+        if not isinstance(target_users, (list, tuple)):
+            target_users = [target_users]
+        event = Event(
+            type=type,
+            style=Event.TYPE_TO_STYLE_MAP.get(type, 'info'),
+            message=Event.TYPE_TO_MESSAGE_MAP.get(type, 'No message. WAT?')
+        )
+        event.save()
+        for target_user in target_users:
+            event.target_users.add(target_user)

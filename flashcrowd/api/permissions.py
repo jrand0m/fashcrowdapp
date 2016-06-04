@@ -60,3 +60,13 @@ class UserBadgeModelPermission(BasePermission):
     def has_object_permission(self, request, view, obj):
         # TODO
         return True
+
+
+class EventModelPermission(BasePermission):
+    def has_permission(self, request, view):
+        # TODO
+        return True
+
+    def has_object_permission(self, request, view, obj):
+        # TODO
+        return True

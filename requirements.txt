@@ -2,3 +2,4 @@ Django==1.9.6
 django-jet==0.1.4
 djangorestframework==3.3.3
 Pillow==3.2.0
+pytz==2016.4

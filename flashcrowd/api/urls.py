@@ -7,6 +7,7 @@ router.register(r'users', viewsets.UsersViewSet, base_name='customuser')
 router.register(r'tasks', viewsets.TasksViewSet, base_name='task')
 router.register(r'calls', viewsets.CallsViewSet, base_name='call')
 router.register(r'badges', viewsets.BadgesViewSet, base_name='badge')
+router.register(r'events', viewsets.EventsViewSet, base_name='event')
 
 urlpatterns = [
     url(r'^', include(router.urls)),
