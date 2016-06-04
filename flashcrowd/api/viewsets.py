@@ -125,7 +125,7 @@ class CallsViewSet(ModelViewSet):
     permission_classes = [permissions.CallModelPermission]
 
     def get_queryset(self):
-        return Call.objects.filter(executor=self.request.user, state='completed')
+        return Call.objects.filter(task__author=self.request.user, state='completed')
 
     @detail_route(permission_classes=[IsAuthenticated])
     def approve(self, request, pk):
