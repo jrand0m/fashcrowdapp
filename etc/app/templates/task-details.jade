@@ -15,7 +15,7 @@ include _task
 
             else if model.call.state === 'accepted'
                 form(data-action="/task/#{model.id}/complete")
-                    input.form-control(type="file" required)
+                    input.form-control(type="file" name="proof" required)
                     br
                     input.btn.btn-md.btn-primary.btn-default(type="submit" value="Send")
 
