@@ -1,5 +1,5 @@
 mixin TaskCard(task)
-    .task(data-href="/task/#{task.id}/details/")
+    .task(data-href="/task/#{task.id}/details/")&attributes(attributes)
         .row
             .col-xs-3
                 .category(class=task.category)
@@ -10,8 +10,10 @@ mixin TaskCard(task)
                     if task.summary
                         b= task.summary
                         | &nbsp;
-                    small= task.description
 
-                    if task.call
-                        i= task.call.state
+                        if task.call
+                            i= task.call.state
+                            | &nbsp;
+
+                    small= task.description
 
