@@ -18,6 +18,10 @@ export default new class extends base {
         return this.get_('/api/tasks/finished_tasks/', data || {})
     }
 
+    get_created(data?: Object): Promise {
+        return this.get_('/api/tasks/created_tasks/', data || {})
+    }
+
     accept(id) {
         return this.get_(`/api/tasks/${id}/accept/`, {})
     }

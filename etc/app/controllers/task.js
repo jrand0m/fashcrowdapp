@@ -38,7 +38,7 @@ export default class extends base {
     my() {
         this.freeze();
 
-        tasks.get_active()
+        tasks.get_created()
             .then(_ => this.push(Tasks, _))
     }
 
