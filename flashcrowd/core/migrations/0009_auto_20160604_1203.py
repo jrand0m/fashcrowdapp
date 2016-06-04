@@ -33,6 +33,7 @@ class Migration(migrations.Migration):
                 ('icon', models.ImageField(upload_to='category')),
             ],
         ),
+
         migrations.RunPython(create_categories),
         migrations.AlterField(
             model_name='event',

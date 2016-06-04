@@ -74,8 +74,6 @@ class TaskSerializer(ModelSerializer):
         return obj.calls.filter(state='failed').count()
 
 
-
-
 class BadgeSerializer(ModelSerializer):
     class Meta:
         model = Badge
@@ -93,6 +91,7 @@ class EventSerializer(ModelSerializer):
         epoch = datetime.utcfromtimestamp(0)
         return int((obj.date_created.replace(tzinfo=None) - epoch).total_seconds() * 1000000)
         # return int(time.mktime(obj.date_created.timetuple()) * 1000)
+
 
 class CategorySerializer(ModelSerializer):
     class Meta:
