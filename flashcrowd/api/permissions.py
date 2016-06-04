@@ -40,3 +40,23 @@ class CallModelPermission(BasePermission):
     def has_object_permission(self, request, view, obj):
         # TODO
         return True
+
+
+class BadgeModelPermission(BasePermission):
+    def has_permission(self, request, view):
+        # TODO
+        return True
+
+    def has_object_permission(self, request, view, obj):
+        # TODO
+        return True
+
+
+class UserBadgeModelPermission(BasePermission):
+    def has_permission(self, request, view):
+        # TODO
+        return True
+
+    def has_object_permission(self, request, view, obj):
+        # TODO
+        return True

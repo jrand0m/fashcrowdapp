@@ -7,7 +7,7 @@ from rest_framework.decorators import detail_route
 import serializers
 import permissions
 from flashcrowd.users.models import CustomUser
-from flashcrowd.core.models import Task, Call
+from flashcrowd.core.models import Task, Call, Badge
 
 
 class UsersViewSet(ModelViewSet):
@@ -66,3 +66,9 @@ class CallsViewSet(ModelViewSet):
     serializer_class = serializers.CallSerializer
     queryset = Call.objects.all()
     permission_classes = [permissions.CallModelPermission]
+
+
+class BadgesViewSet(ModelViewSet):
+    serializer_class = serializers.BadgeSerializer
+    queryset = Badge.objects.all()
+    permission_classes = [permissions.BadgeModelPermission]

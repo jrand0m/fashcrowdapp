@@ -19,4 +19,4 @@ def index(request):
     context = {
         'bootstrap_json': json.dumps(bootstrap_json),
     }
-    return render(request, 'index.html',context)
+    return render(request, 'index.html', context)

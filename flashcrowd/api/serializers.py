@@ -1,12 +1,22 @@
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, HyperlinkedRelatedField
 from flashcrowd.users.models import CustomUser
-from flashcrowd.core.models import Task, Call
+from flashcrowd.core.models import Task, Call, Badge
 
 
 class UserSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('id', 'url', 'username', 'first_name', 'last_name', 'photo', 'points')
+        #fields = ('id', 'url', 'username', 'first_name', 'last_name', 'photo', 'points', 'badges_earned')
+
+    #badges_earned = SerializerMethodField()
+    #badges = BadgeSerializer(many=True, read_only=True)
+
+    def badges_earned(self, obj):
+        #TODO mike: dont know how not to include all badges
+        return obj.badges.filter(state='failed')
+        raise NotImplementedError()
+        #return obj.calls.filter(state='failed').count()
 
 
 class CallSerializer(ModelSerializer):
@@ -60,3 +70,15 @@ class TaskSerializer(ModelSerializer):
 
     def get_calls_failed(self, obj):
         return obj.calls.filter(state='failed').count()
+
+
+class BadgeSerializer(ModelSerializer):
+    class Meta:
+        model = Badge
+        fields = ('id', 'icon', 'name', 'description')
+
+
+
+
+
+

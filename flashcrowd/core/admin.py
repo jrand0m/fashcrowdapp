@@ -12,3 +12,5 @@ class CallAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Task, TaskAdmin)
 admin.site.register(models.Call, CallAdmin)
+admin.site.register(models.Badge, CallAdmin)
+

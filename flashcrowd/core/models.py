@@ -55,3 +55,46 @@ class Call(models.Model):
         return u'{} {} "{}"'.format(
             self.executor, self.state, self.task
         )
+
+
+class Badge(models.Model):
+    icon = models.ImageField(upload_to='badges', blank=False, null=False)
+    name = models.CharField('badge name', max_length=120, blank=False, null=False)
+    description = models.CharField('badge description', max_length=300, blank=True, null=False)
+    # Nope. Too time-consuming. Not today.
+    # @classmethod
+    # def new(cls, author, bounty, deadline=None):
+    #     return Task.objects.create(author=author, bounty=bounty, deadline=deadline)
+
+    def save(self, *args, **kwargs):
+        # Logic comes here
+        super(Badge, self).save(*args, **kwargs)
+
+    def __repr__(self):
+        return self.__unicode__()
+
+    def __unicode__(self):
+        return u'{} badge'.format(self.name)
+
+
+class UserBadge(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, blank=False, related_name='awarded_user')
+    badge = models.ForeignKey(Badge, null=False, blank=False, related_name='awarded_badge')
+    award_date = models.DateTimeField(default=now, null=False, blank=False)
+
+    # Nope. Too time-consuming. Not today.
+    # @classmethod
+    # def new(cls, author, bounty, deadline=None):
+    #     return Task.objects.create(author=author, bounty=bounty, deadline=deadline)
+
+    def save(self, *args, **kwargs):
+        # Logic comes here
+        super(Task, self).save(*args, **kwargs)
+
+    def __repr__(self):
+        return self.__unicode__()
+
+    def __unicode__(self):
+        return u'{}\'s {} badge'.format(self.user.username, self.badge.name)
+
+
