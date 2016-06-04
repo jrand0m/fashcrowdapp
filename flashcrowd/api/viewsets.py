@@ -21,6 +21,9 @@ class TasksViewSet(ModelViewSet):
     queryset = Task.objects.all()
     permission_classes = [permissions.TaskModelPermission]
 
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
     def accept_or_reject(self, request, pk, is_accept):
         task = get_object_or_404(Task, pk=pk)
 

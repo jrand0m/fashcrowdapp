@@ -7,6 +7,7 @@ from django.utils.timezone import now
 
 class Task(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, blank=False, related_name='authored_tasks')
+    description = models.TextField(null=False, blank=False)
     date_created = models.DateTimeField(default=now, null=False, blank=False)
     date_deadline = models.DateTimeField(default=None, null=True, blank=True)
     bounty = models.PositiveIntegerField(null=False, blank=False)

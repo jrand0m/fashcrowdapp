@@ -39,17 +39,18 @@ class TaskSerializer(ModelSerializer):
     class Meta:
         model = Task
         fields = (
-            'id', 'url', 'date_created', 'date_deadline', 'bounty', 'author', 'calls',
+            'id', 'url', 'description', 'date_created', 'date_deadline', 'bounty', 'author', 'calls',
             'calls_total', 'calls_accepted', 'calls_completed', 'calls_succeeded', 'calls_failed'
         )
+        read_only_fields = ('id', 'url', 'date_created', 'author', 'calls', 'calls_total')
 
-    author = UserSerializer(many=False)
+    author = UserSerializer(many=False, read_only=True)
 
-    calls_total = SerializerMethodField()
-    calls_accepted = SerializerMethodField()
-    calls_completed = SerializerMethodField()
-    calls_succeeded = SerializerMethodField()
-    calls_failed = SerializerMethodField()
+    calls_total = SerializerMethodField(read_only=True)
+    calls_accepted = SerializerMethodField(read_only=True)
+    calls_completed = SerializerMethodField(read_only=True)
+    calls_succeeded = SerializerMethodField(read_only=True)
+    calls_failed = SerializerMethodField(read_only=True)
 
     # calls = SerializerMethodField()
 
