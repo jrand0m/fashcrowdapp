@@ -21,6 +21,7 @@ def create_site_and_social_app(apps, schema):
         client_id='280018839013932',
         secret='ab864dba821bf7003c0525fbdbff502b'
     )
+    site.save()
     app.sites.add(site)
 
 

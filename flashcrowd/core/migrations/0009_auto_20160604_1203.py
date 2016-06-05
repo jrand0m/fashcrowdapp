@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.db import migrations, models
 import django.db.models.deletion
-import flashcrowd.core.models
+from flashcrowd.core.models import get_default_category
 
 
 def create_categories(apps, schema):
@@ -43,6 +43,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='task',
             name='category',
-            field=models.ForeignKey(default=flashcrowd.core.models.get_default_category, on_delete=django.db.models.deletion.CASCADE, related_name='category_tasks', to='core.Category'),
+            field=models.ForeignKey(default=get_default_category, on_delete=django.db.models.deletion.CASCADE, related_name='category_tasks', to='core.Category'),
         ),
     ]
