@@ -49,7 +49,7 @@ class Task(models.Model):
         super(Task, self).save(*args, **kwargs)
 
 
-def __repr__(self):
+    def __repr__(self):
         return self.__unicode__()
 
     def __unicode__(self):
