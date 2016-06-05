@@ -211,8 +211,12 @@ class UserBadgesViewSet(ModelViewSet):
                 try:
                     if eval(badge.validator, globals(), locals()):
                         UserBadge.objects.create(user=user, badge=badge, award_date=datetime.now())
+                        try:
+                            icon = badge.icon.url
+                        except:
+                            icon = None
                         Event.create_new('badge_earned', [user], dict(
-                            icon=badge.icon.url,
+                            icon=icon,
                             name=badge.name
                         ))
                 except TypeError as e:
