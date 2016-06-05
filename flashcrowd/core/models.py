@@ -4,6 +4,8 @@ from django.db import models
 from django.conf import settings
 from django.utils.timezone import now
 from taggit.managers import TaggableManager
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 import re
 
 
@@ -161,15 +163,19 @@ class Event(models.Model):
     message = models.TextField(null=False, blank=False)
     target_users = models.ManyToManyField(settings.AUTH_USER_MODEL, null=False, blank=False)
     date_created = models.DateTimeField(default=now, null=False, blank=False)
-
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True, blank=True)
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    content_object = GenericForeignKey('content_type', 'object_id')
     @classmethod
-    def create_new(self, type, target_users):
+    def create_new(cls, type, target_users, related_object):
+
         if not isinstance(target_users, (list, tuple)):
             target_users = [target_users]
         event = Event(
             type=type,
             style=Event.TYPE_TO_STYLE_MAP.get(type, 'info'),
-            message=Event.TYPE_TO_MESSAGE_MAP.get(type, 'No message. WAT?')
+            message=Event.TYPE_TO_MESSAGE_MAP.get(type, 'No message. WAT?'),
+            content_object=related_object
         )
         event.save()
         for target_user in target_users:

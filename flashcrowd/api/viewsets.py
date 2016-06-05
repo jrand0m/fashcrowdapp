@@ -31,9 +31,9 @@ class TasksViewSet(ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-        Event.create_new('task_created', [self.request.user])
+        Event.create_new('task_created', related_object=self.request.user)
         users = list(CustomUser.objects.exclude(id=self.request.user.id).all())
-        Event.create_new('new_task', users)
+        Event.create_new('new_task', users, related_object=None)
 
     def accept_or_reject(self, request, pk, is_accept):
         task = get_object_or_404(Task, pk=pk)
@@ -44,7 +44,7 @@ class TasksViewSet(ModelViewSet):
             call = Call(task=task, executor=request.user, state='accepted' if is_accept else 'rejected')
             call.save()
 
-            Event.create_new('task_accepted' if is_accept else 'task_rejected', [task.author])
+            Event.create_new('task_accepted' if is_accept else 'task_rejected', task.author)
 
         return Response(serializers.TaskSerializer(instance=task, context=dict(request=request)).data)
 
@@ -78,7 +78,7 @@ class TasksViewSet(ModelViewSet):
         call.proof.save(proof.name, proof)
         call.save()
 
-        Event.create_new('task_completed', [task.author])
+        Event.create_new('task_completed', related_object=task.author)
 
         return Response(serializers.TaskSerializer(instance=task, context=dict(request=request)).data)
 
@@ -122,7 +122,10 @@ class TasksViewSet(ModelViewSet):
     @list_route(permission_classes=[IsAuthenticated])
     def add_to_bookmark(self, request, pk):
         task = get_object_or_404(Task, pk=pk, task__author=request.user)
-        Bookmark.objects.create_new()
+        bmark = Bookmark()
+        bmark.task = task
+        bmark.user = request.user
+        bmark.save()
 
 
 
@@ -147,7 +150,7 @@ class CallsViewSet(ModelViewSet):
 
         call.executor.grant_points(call.task.get_final_bounty())
 
-        Event.create_new('proof_accepted', [call.executor])
+        Event.create_new('proof_accepted', related_object=call.executor)
 
         return Response(serializers.CallSerializer(instance=call, many=False, context=dict(request=request)).data)
 
@@ -163,7 +166,7 @@ class CallsViewSet(ModelViewSet):
         call.state = 'lost'
         call.save()
 
-        Event.create_new('proof_rejected', [call.executor])
+        Event.create_new('proof_rejected', related_object=call.executor)
 
         return Response(serializers.CallSerializer(instance=call, many=False, context=dict(request=request)).data)
 
