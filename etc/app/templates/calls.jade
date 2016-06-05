@@ -1,10 +1,7 @@
+include _tasks-menu
 
 header
-    nav.nav.nav-pills
-        li(role="presentation"): a(data-href="/task/active") Accepted
-        li(role="presentation"): a(data-href="/task/saved") Saved
-        li(role="presentation"): a(data-href="/task/my") My
-        li(role="presentation"): a(data-href="/calls").active Calls
+    +TasksMenu('calls')
 
 if !model.length
     h2(style="text-align: center") Whops! Nothing here so far :-(

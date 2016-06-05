@@ -1,19 +1,18 @@
 mixin TaskCard(task)
     .task.card(data-href="/task/#{task.id}/details/")&attributes(attributes)
+
         .pull-left
             .category(class=task.category)
-        .pull-left
+        .cnt
             strong.bigger-text.shine-text= task.author.username
 
             div
-                if task.summary
-                    b= task.summary
-                    | &nbsp;
+                b= task.summary
+                | &nbsp;
 
                 if task.call
                     i= task.call.state
                     | &nbsp;
 
                 small.thin= task.description
-
         .clearfix

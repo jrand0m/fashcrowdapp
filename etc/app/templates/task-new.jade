@@ -16,7 +16,7 @@ form(data-action="/task/save" role="form")
         input.form-control#bounty(type="number" min=0 required name="bounty" value=model.bounty)
     .form-group
         label(for="summary") Summary:
-        input.form-control#summary(type="text" required value=model.summary)
+        input.form-control#summary(type="text" name="summary" required value=model.summary)
     .form-group
         label(for="description") Description:
         br

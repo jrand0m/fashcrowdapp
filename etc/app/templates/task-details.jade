@@ -9,72 +9,69 @@ include _task
             = model.summary
 
     .dlg--content
-        .row
-            .col.col-md-offset-1.col-md-10
-                //-+TaskCard(model)
+        .cnt(style="margin:30px")
+            .card
+                .text-center
+                    .category.bigger.margin-auto(class=model.category)
 
-                .card
-                    .text-center
-                        .category.bigger.margin-auto(class=model.category)
+                    div(style="margin: 1rem 0 2rem")
+                        strong.bigger-text.shine-text= model.summary
 
-                        div(style="margin: 1rem 0 2rem")
-                            strong.bigger-text.shine-text= model.summary
+                div
+                    //-if model.summary
+                        b= model.summary
+                        | &nbsp;
 
-                    div
-                        //-if model.summary
-                            b= model.summary
-                            | &nbsp;
+                    if model.call
+                        i= model.call.state
+                        | &nbsp;
 
-                        if model.call
-                            i= model.call.state
-                            | &nbsp;
+                    small.thin= model.description
 
-                        small.thin= model.description
+                .row(style="margin-top: 2rem; margin-bottom: 2rem")
+                    .col-xs-4.text-center
+                        .circled 12h
+                        small Deadline
+                    .col-xs-4.text-center
+                        .circled 30
+                        small Value
+                    .col-xs-4.text-center
+                        .circled 35
+                        small Participants
 
-                    .row(style="margin-top: 2rem; margin-bottom: 2rem")
-                        .col-xs-4.text-center
-                            .circled 12h
-                            small Deadline
-                        .col-xs-4.text-center
-                            .circled 30
-                            small Value
-                        .col-xs-4.text-center
-                            .circled 35
-                            small Participants
+                div(style="margin-bottom: 2rem")
+                    .hashtag holy
+                    .hashtag fuck
+                    .hashtag i
+                    .hashtag am
+                    .hashtag so
+                    .hashtag fucking
+                    .hashtag tired
 
-                    div(style="margin-bottom: 2rem")
-                        .hashtag holy
-                        .hashtag fuck
-                        .hashtag i
-                        .hashtag am
-                        .hashtag so
-                        .hashtag fucking
-                        .hashtag tired
+            div(style="margin-top:15px")
+                if model.is_author
+                    button.btn.btn-xs()
+                        i.fa.fa-edit
+                        | Edit
 
-                div(style="margin-top:15px")
-                    if model.is_author
-                        button.btn.btn-xs()
-                            i.fa.fa-edit
-                            | Edit
+                else if !model.call
+                    .row
+                        .col-xs-6
+                            button.full-width.btn.btn-lg.btn-pill.btn-primary(data-href="/task/#{model.id}/accept") Go for it
+                        .col-xs-6
+                            button.full-width.btn.btn-lg.btn-pill.btn-danger(data-href="/task/#{model.id}/reject") Dismiss
 
-                    else if !model.call
-                        .row
-                            .col-xs-6
-                                button.full-width.btn.btn-lg.btn-pill.btn-primary(data-href="/task/#{model.id}/accept") Go for it
-                            .col-xs-6
-                                button.full-width.btn.btn-lg.btn-pill.btn-danger(data-href="/task/#{model.id}/reject") Dismiss
+                else if model.call.state === 'accepted'
+                    form(data-action="/task/#{model.id}/complete")
+                        input.form-control(type="file" name="proof" required)
+                        br
+                        input.btn.btn-md.btn-primary.btn-default(type="submit" value="Send")
 
-                    else if model.call.state === 'accepted'
-                        form(data-action="/task/#{model.id}/complete")
-                            input.form-control(type="file" name="proof" required)
-                            br
-                            input.btn.btn-md.btn-primary.btn-default(type="submit" value="Send")
+                else if model.call.state === 'completed'
+                    | Verification is pending
 
-                    else if model.call.state === 'completed'
-                        | Verification is pending
-
-                    else
-                        | Your task is #{model.call.state}
+                else
+                    | Your task is #{model.call.state}
 
 
     .dlg--footer

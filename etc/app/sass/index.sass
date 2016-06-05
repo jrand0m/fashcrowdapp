@@ -1,8 +1,36 @@
 $icon-font-path: "/static/fonts/bootstrap/"
 
-@import "bootstrap-custom"
+$bg: #E6E7E9
+$body: #FFFFFF
+$accent: #007AFF
+$shine: #FF2861
+$soft: #CAC9CF
+$hr: #888888
+
+//$border-radius-base: 2px
+
+$btn-default-color: $accent
+$btn-default-bg: $body
+$btn-default-border: $accent
+
+$btn-primary-color: $body
+$btn-primary-bg: $accent
+$btn-primary-border: $accent
+
+$btn-danger-color: $body
+$btn-danger-bg: $shine
+$btn-danger-border: $shine
+
+$input-group-addon-bg: lighten($soft, 17%)
+$input-group-addon-border-color: lighten($accent, 10%)
+
+$input-bg: lighten($soft, 17%)
+$input-border: lighten($accent, 10%)
 
 @import "../bower/bootstrap-sass/assets/stylesheets/bootstrap"
+
+@import "bootstrap-custom"
+
 
 $fa-font-path: "/static/fonts"
 
@@ -103,30 +131,31 @@ header
     float: right
 
 .category
-  border-radius: 50%
+  //border-radius: 50%
   width: 64px
   height: 64px
-  background-color: $soft
+  //background-color: $soft
   margin-right: 1rem
+  background-size: 100%
 
   &.bigger
     width: 96px
     height: 96px
 
   &.selfie
-    background-color: goldenrod
+    background-image: url(/static/images/mini-badges-91.png)
 
   &.geo
-    background-color: greenyellow
+    background-image: url(/static/images/mini-badges-95.png)
 
   &.stranger
-    background-color: blueviolet
+    background-image: url(/static/images/mini-badges-92.png)
 
   &.team
-    background-color: orangered
+    background-image: url(/static/images/mini-badges-93.png)
 
   &.mystery
-    background-color: cornflowerblue
+    background-image: url(/static/images/mini-badges-94.png)
 
 .main-menu
     padding-left: 5%
