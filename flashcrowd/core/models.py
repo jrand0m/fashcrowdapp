@@ -118,6 +118,7 @@ class UserBadge(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, blank=False, related_name='awarded_user')
     badge = models.ForeignKey(Badge, null=False, blank=False, related_name='awarded_badge')
     award_date = models.DateTimeField(default=now, null=False, blank=False)
+    level = models.PositiveIntegerField(default=0, null=False, blank=False)
 
     # Nope. Too time-consuming. Not today.
     # @classmethod
@@ -188,5 +189,3 @@ class Event(models.Model):
 class Bookmark(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, blank=False, related_name='bookmarks')
     task = models.ForeignKey('Task', null=False, blank=False, related_name='bookmarks')
-
-

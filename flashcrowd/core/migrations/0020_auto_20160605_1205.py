@@ -26,7 +26,7 @@ def create_badges(apps, schema):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0013_auto_20160604_1503'),
+        ('core', '0019_auto_20160605_1151'),
     ]
 
     operations = [

@@ -3,25 +3,21 @@ from django.utils.timezone import datetime
 
 
 def process_badges(user):
+    # Fellow people of Kostylland salute you!
     all_badges = Badge.objects.all()
-    user_calls = Call.objects.filter(executor=user.id)
-    user_tasks = Task.objects.filter(id__in=[call.task.id for call in user_calls])
-    exclude_badges_list = [ub.badge for ub in UserBadge.objects.filter(user=user.id)]
+    user_calls = Call.objects.filter(executor=user, state__in=('completed', 'won', 'lost'))
 
     for badge in all_badges:
-        if badge not in exclude_badges_list:
-            try:
-                if eval(badge.validator, globals(), locals()):
-                    user_badge = UserBadge.objects.create(user=user, badge=badge, award_date=datetime.now())
-                    try:
-                        icon = badge.icon.url
-                    except:
-                        icon = None
-                    # Event.create_new('badge_earned', [user], dict(
-                    #     icon=icon or '',
-                    #     name=badge.name
-                    # ))
-                    Event.create_new('badge_earned', [user], related_object=user_badge)
-            except TypeError as e:
-                print "error!  i know - very informative. probably bad validation badge id {}. error is {}".format(
-                    badge.id, e)
+        user_badge = UserBadge.objects.filter(user=user, badge=badge).first()
+
+        level = eval(badge.validator, globals(), locals())
+
+        if not user_badge and level > 0:
+            # User has no badge yet, but has new level
+            user_badge = UserBadge.objects.create(user=user, badge=badge)
+            Event.create_new('badge_earned', [user], related_object=user_badge)
+        elif user_badge and user_badge.level < level:
+            # Badge upgraded
+            user_badge.level = level
+            user_badge.save()
+            Event.create_new('badge_earned', [user], related_object=user_badge)
