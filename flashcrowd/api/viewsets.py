@@ -213,7 +213,7 @@ class UserBadgesViewSet(ModelViewSet):
                         UserBadge.objects.create(user=user, badge=badge, award_date=datetime.now())
                 except TypeError as e:
                     print "error!  i know - very informative. probably bad validation badge id {}. error is {}".format(badge.id, e)
-        return UserBadge.objects.filter(user=user)
+        return UserBadge.objects.filter(user=user.id)
 
 
 class BookmarksViewSet(ModelViewSet):
