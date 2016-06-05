@@ -11,7 +11,8 @@
     "jquery": "~2.1.4",
     "bootstrap-sass": "^3.3.6",
     "page": "visionmedia/page.js#^1.7.1",
-    "font-awesome": "^4.6.3"
+    "font-awesome": "^4.6.3",
+    "jQuery-Touch-Events": "git://github.com/SamDelgado/jQuery-Touch-Events#6eeb045d3b"
   },
   "devDependencies": {},
   "license": "MIT"

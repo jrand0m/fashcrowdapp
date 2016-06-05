@@ -1,6 +1,8 @@
 import $ from 'lib/jquery'
 import {navigate, dispatchFormData} from 'lib/controller'
 
+import touchEvents from 'bower/JQuery-Touch-Events/index'
+
 import btAlerts from 'bootstrap/alert'
 
 import feed from 'controllers/feed'
@@ -18,7 +20,7 @@ $(() => {
     $($.parseHTML(Layout(data))).appendTo('body');
 
     $('body')
-        .on('click touchstart', '[data-href]', function (e) {
+        .on('click tap', '[data-href]', function (e) {
             e.preventDefault();
             navigate($(this).data('href'));
         })
@@ -26,7 +28,7 @@ $(() => {
             e.preventDefault();
             dispatchFormData($(e.target).data('action'), new FormData(e.target));
         })
-        .on('click touchstart', '.dialog .close-me', e => {
+        .on('click tap', '.dialog .close-me', e => {
             e.preventDefault();
             $(e.target).closest('.dialog').remove()
         });
