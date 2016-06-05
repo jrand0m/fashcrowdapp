@@ -46,9 +46,11 @@ include _task
 
             div(style="margin-top:15px")
                 if model.is_author
-                    button.btn.btn-xs()
+                    button.btn.btn-lg
                         i.fa.fa-edit
                         | Edit
+
+                    button.btn.btn-default.btn-lg(data-href="/calls")(class=tab == 'calls' ? 'active' : '') Review proofs
 
                 else if !model.call
                     .row
