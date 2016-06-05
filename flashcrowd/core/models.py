@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 from django.db import models
 from django.conf import settings
 from django.utils.timezone import now
+from taggit.managers import TaggableManager
+import re
 
 
 class Category(models.Model):
@@ -31,7 +33,7 @@ class Task(models.Model):
     date_created = models.DateTimeField(default=now, null=False, blank=False)
     date_deadline = models.DateTimeField(default=None, null=True, blank=True)
     bounty = models.PositiveIntegerField(null=False, blank=False)
-
+    tags = TaggableManager()
 
     # Nope. Too time-consuming. Not today.
     # @classmethod
@@ -39,7 +41,11 @@ class Task(models.Model):
     #     return Task.objects.create(author=author, bounty=bounty, deadline=deadline)
 
     def save(self, *args, **kwargs):
-        # Logic comes here
+        tags_detected = re.findall(r'\b#\w+', self.description)
+        self.tags.clear()
+        for new_tag in tags_detected:
+            self.tags.add(new_tag)
+
         super(Task, self).save(*args, **kwargs)
 
     def __repr__(self):
