@@ -42,8 +42,8 @@ class Task(models.Model):
 
     def save(self, *args, **kwargs):
         tags_detected = re.findall(r'\b#\w+', self.description)
-        super(Task, self).save(*args, **kwargs)
-        self.tags.clear()
+        if self.id:
+            self.tags.clear()
         for new_tag in tags_detected:
             self.tags.add(new_tag)
         super(Task, self).save(*args, **kwargs)
