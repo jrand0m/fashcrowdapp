@@ -4,7 +4,7 @@ mixin TaskCard(task)
         .pull-left
             .category(class=task.category)
         .cnt
-            strong.bigger-text.shine-text= task.author.username
+            strong.bigger-text.shine-text= task.author.display_name
 
             div
                 b= task.summary

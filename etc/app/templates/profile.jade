@@ -1,0 +1,45 @@
+header
+    .text-center: strong Profile
+
+.profile
+    .text-center
+        .avatar
+            img(width=124 height=124 src=model.photo_url)
+        h3.user-title= model.display_name
+        .wallet
+            | Wallet: #{model.points}
+    .row(style="margin-top: 2rem; margin-bottom: 2rem")
+        .col-xs-4.text-center
+            .circled 12
+            small Participated
+        .col-xs-4.text-center
+            .circled 5
+            small Created
+        .col-xs-4.text-center
+            .circled 35
+            small Friends
+
+.history
+    .item.card
+        .pull-left
+            .category.mystery
+        .cnt
+            strong.bigger-text.shine-text Today
+
+        .clearfix
+
+    .item.card
+        .pull-left
+            .category.geo
+        .cnt
+            strong.bigger-text.shine-text Today
+
+        .clearfix
+
+    .item.card
+        .pull-left
+            .category.selfie
+        .cnt
+            strong.bigger-text.shine-text Today
+
+        .clearfix

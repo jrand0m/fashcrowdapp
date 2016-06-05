@@ -7,7 +7,7 @@ var handlers = [],
     delay = delay_min;
 
 function _update_delay(ml) {
-    delay = Math.ceil(Math.min(delay_min, Math.max(delay_max, delay * ml)));
+    delay = Math.ceil(Math.max(delay_min, Math.min(delay_max, delay * ml)));
 }
 
 
