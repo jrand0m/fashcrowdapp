@@ -1,0 +1,6 @@
+.dialog
+    .dlg--popup
+        .text-center: b.text-center= model.summary
+        .text-center: .small= model.message
+        hr
+        .text-center: button.btn.btn-primary.btn-md.btn-default(data-href=model.href)= model.button || 'OK'

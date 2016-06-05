@@ -24,3 +24,18 @@ class CustomUser(AbstractUser):
         self.points += points
         self.points_original += points
         self.save()
+
+    def get_display_name(self):
+        if self.first_name and self.last_name:
+            return u' '.join((self.first_name, self.last_name))
+        return self.username
+
+    def get_photo_url(self):
+        if self.photo:
+            return self.photo.url
+        else:
+            sa = self.socialaccount_set.first()
+            if sa:
+                return sa.get_avatar_url()
+            else:
+                return None

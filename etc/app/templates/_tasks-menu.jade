@@ -1,0 +1,6 @@
+mixin TasksMenu(tab)
+    nav.text-center
+        .btn-group
+            a.btn.btn-default.btn-lg(data-href="/task/active")(class=tab == 'active' ? 'active' : '') Accepted
+            a.btn.btn-default.btn-lg(data-href="/task/saved")(class=tab == 'saved' ? 'active' : '') Saved
+            a.btn.btn-default.btn-lg(data-href="/task/my")(class=tab == 'my' ? 'active' : '') My

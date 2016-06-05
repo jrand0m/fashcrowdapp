@@ -1,18 +1,49 @@
 $icon-font-path: "/static/fonts/bootstrap/"
 
-@import "bootstrap-custom"
+$bg: #E6E7E9
+$body: #FFFFFF
+$accent: #007AFF
+$shine: #FF2861
+$soft: #CAC9CF
+$hr: #888888
+
+//$border-radius-base: 2px
+
+$btn-default-color: $accent
+$btn-default-bg: $body
+$btn-default-border: $accent
+
+$btn-primary-color: $body
+$btn-primary-bg: $accent
+$btn-primary-border: $accent
+
+$btn-danger-color: $body
+$btn-danger-bg: $shine
+$btn-danger-border: $shine
+
+$input-group-addon-bg: lighten($soft, 17%)
+$input-group-addon-border-color: lighten($accent, 10%)
+
+$input-bg: lighten($soft, 17%)
+$input-border: lighten($accent, 10%)
 
 @import "../bower/bootstrap-sass/assets/stylesheets/bootstrap"
+
+@import "bootstrap-custom"
+
 
 $fa-font-path: "/static/fonts"
 
 @import "_helpers"
 @import "../bower/font-awesome/scss/font-awesome"
 
+@import "fonts"
+
 @import "spinner"
 
 body
-    background: $bg
+  background: $bg
+  font-family: "San Francisco", sans-serif
 
 footer
   position: fixed
@@ -80,7 +111,7 @@ header
       margin-top: -$base-line-height
       margin-left: -$base-line-height
 
-.task + .task
+.card + .card
   margin-top: 15px
 
 .dialog
@@ -91,11 +122,22 @@ header
   left: 0
   right: 0
 
-//  .dlg--content, .dlg--header, .dlg--footer
-//    background: #fff
+  //.dlg--content, .dlg--header, .dlg--footer
+    background: #fff
 
-  .dlg--content
+  //.dlg--content
     padding: 15px
+
+  .dlg--popup
+    position: absolute
+    top: 50%
+    left: 50%
+    width: 80vw
+    transform: translate(-50%, -50%)
+    border-radius: 2rem
+    background: white
+    padding: 15px 30px
+    box-sizing: border-box
 
 .dlg--header
 
@@ -103,30 +145,29 @@ header
     float: right
 
 .category
-  border-radius: 50%
   width: 64px
   height: 64px
-  background-color: $soft
   margin-right: 1rem
+  background-size: 100%
 
   &.bigger
     width: 96px
     height: 96px
 
   &.selfie
-    background-color: goldenrod
+    background-image: url(/static/images/mini-badges-91.png)
 
   &.geo
-    background-color: greenyellow
+    background-image: url(/static/images/mini-badges-95.png)
 
   &.stranger
-    background-color: blueviolet
+    background-image: url(/static/images/mini-badges-92.png)
 
   &.team
-    background-color: orangered
+    background-image: url(/static/images/mini-badges-93.png)
 
   &.mystery
-    background-color: cornflowerblue
+    background-image: url(/static/images/mini-badges-94.png)
 
 .main-menu
     padding-left: 5%
@@ -173,3 +214,12 @@ header
         background: url(/static/images/create.png) no-repeat center top
         background-size: contain
         margin-top: -1.5rem
+
+.profile
+  margin-bottom: 15px
+
+  .avatar> img
+    background: #ddd
+    overflow: hidden
+    border-radius: 50%
+

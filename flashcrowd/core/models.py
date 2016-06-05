@@ -143,7 +143,8 @@ class Event(models.Model):
         ('task_rejected', 'Someone rejected your task.'),
         ('task_completed', 'Someone completed your task!'),
         ('proof_accepted', 'Congrats! Creator accepted your proof!'),
-        ('proof_rejected', 'Oops... Creator rejected your proof! :(')
+        ('proof_rejected', 'Oops... Creator rejected your proof! :('),
+        ('badge_earned', 'You earned a new badge!<br /><img src="{icon}" /><br /><h4>{badge}</h4>')
     )
 
     TYPE_TO_STYLE_MAP = dict(
@@ -153,7 +154,8 @@ class Event(models.Model):
         task_rejected='info',
         task_completed='success',
         proof_accepted='success',
-        proof_rejected='danger'
+        proof_rejected='danger',
+        badge_earned='success'
     )
 
     TYPE_TO_MESSAGE_MAP = dict(TYPES)
@@ -166,15 +168,16 @@ class Event(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True, blank=True)
     object_id = models.PositiveIntegerField(null=True, blank=True)
     content_object = GenericForeignKey('content_type', 'object_id')
+
     @classmethod
     def create_new(cls, type, target_users, related_object):
-
         if not isinstance(target_users, (list, tuple)):
             target_users = [target_users]
+        message = Event.TYPE_TO_MESSAGE_MAP.get(type, 'No message. WAT?')
         event = Event(
             type=type,
             style=Event.TYPE_TO_STYLE_MAP.get(type, 'info'),
-            message=Event.TYPE_TO_MESSAGE_MAP.get(type, 'No message. WAT?'),
+            message=message,
             content_object=related_object
         )
         event.save()

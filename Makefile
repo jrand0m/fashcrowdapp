@@ -10,6 +10,6 @@ superuser:
 all:
 	pip install -r requirements.txt
 	./manage.py migrate
-	./manage.py runserver
+	./manage.py runserver 0.0.0.0:8000
 
 run: | all

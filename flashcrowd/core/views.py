@@ -1,5 +1,10 @@
-from django.shortcuts import render
+from django.core.urlresolvers import reverse
+from django.shortcuts import render, redirect
 import json
+
+def main(request):
+    # return render(request, 'auth.html', dict(target_url='/app'))
+    return redirect('/app')
 
 def index(request):
     user = request.user
@@ -13,13 +18,12 @@ def index(request):
             bootstrap_json['avatar'] = user.photo.url
         bootstrap_json['points'] = user.points
 
-
         context = {
             'bootstrap_json': json.dumps(bootstrap_json),
         }
         return render(request, 'index.html', context)
     else:
-        return render(request, 'auth.html', dict())
+        return render(request, 'auth.html', dict(target_url=reverse('facebook_login')))
 
 def make_error_handler(code, status):
     def error_handler(request):

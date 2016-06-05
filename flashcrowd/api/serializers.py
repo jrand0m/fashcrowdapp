@@ -21,16 +21,30 @@ class CategorySerializer(ModelSerializer):
 class UserSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('id', 'url', 'username', 'first_name', 'last_name', 'photo', 'points', 'badges_earned')
+        fields = (
+            'id', 'url',
+            'username', 'first_name', 'last_name', 'display_name',
+            'photo', 'photo_url', 'points', 'badges_earned', 'display_name'
+        )
+        read_only = ('points',)
         #fields = ('id', 'url', 'username', 'first_name', 'last_name', 'photo', 'points', 'badges_earned')
 
-    badges_earned = SerializerMethodField()
+    badges_earned = SerializerMethodField(read_only=True)
 
     def get_badges_earned(self, obj):
         #TODO mike: dont know how not to include all badges
         user_badge_ids = [ub.badge_id for ub in UserBadge.objects.filter(user=obj)]
         queryset = Badge.objects.filter(id__in=user_badge_ids)
         return BadgeSerializer(instance=queryset, context=self.context, many=True).data
+
+    display_name = SerializerMethodField()
+    photo_url = SerializerMethodField()
+
+    def get_display_name(self, obj):
+        return obj.get_display_name()
+
+    def get_photo_url(self, obj):
+        return obj.get_photo_url()
 
 
 class CallSerializer(ModelSerializer):
