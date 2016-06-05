@@ -190,7 +190,7 @@ class BadgesViewSet(ModelViewSet):
 class EventsViewSet(ModelViewSet):
     serializer_class = serializers.EventSerializer
     queryset = Event.objects.all()
-    permission_classes = [permissions.EventModelPermission]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         min = float(self.request.GET.get('min', 0)) / 1000000
