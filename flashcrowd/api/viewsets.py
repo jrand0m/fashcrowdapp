@@ -1,6 +1,7 @@
 from collections import OrderedDict
 
 from django.shortcuts import get_object_or_404
+from flashcrowd.core.helpers import process_badges
 from rest_framework.exceptions import APIException
 from rest_framework.parsers import FormParser
 from rest_framework.parsers import MultiPartParser
@@ -35,6 +36,8 @@ class TasksViewSet(ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
+        process_badges(self.request.user)
+
         Event.create_new('task_created', [self.request.user])
         users = list(CustomUser.objects.exclude(id=self.request.user.id).all())
         Event.create_new('new_task', users)
@@ -49,6 +52,8 @@ class TasksViewSet(ModelViewSet):
             call.save()
 
             Event.create_new('task_accepted' if is_accept else 'task_rejected', [task.author])
+
+            process_badges(request.user)
 
         return Response(serializers.TaskSerializer(instance=task, context=dict(request=request)).data)
 
@@ -83,6 +88,7 @@ class TasksViewSet(ModelViewSet):
         call.save()
 
         Event.create_new('task_completed', [task.author])
+        process_badges(call.executor)
 
         return Response(serializers.TaskSerializer(instance=task, context=dict(request=request)).data)
 
@@ -204,28 +210,8 @@ class UserBadgesViewSet(ModelViewSet):
     permission_classes = [permissions.UserBadgeModelPermission]
 
     def get_queryset(self):
-        user = self.request.user
-        all_badges = Badge.objects.all()
-        user_calls = Call.objects.filter(executor=user.id)
-        user_tasks = Task.objects.filter(id__in=[call.task.id for call in user_calls])
-        exclude_badges_list = [ub.badge for ub in UserBadge.objects.filter(user=user.id)]
-
-        for badge in all_badges:
-            if badge not in exclude_badges_list:
-                try:
-                    if eval(badge.validator, globals(), locals()):
-                        UserBadge.objects.create(user=user, badge=badge, award_date=datetime.now())
-                        try:
-                            icon = badge.icon.url
-                        except:
-                            icon = None
-                        Event.create_new('badge_earned', [user], dict(
-                            icon=icon,
-                            name=badge.name
-                        ))
-                except TypeError as e:
-                    print "error!  i know - very informative. probably bad validation badge id {}. error is {}".format(badge.id, e)
-        return UserBadge.objects.filter(user=user.id)
+        process_badges(self.request.user)
+        return UserBadge.objects.filter(user=self.request.user.id)
 
 
 class BookmarksViewSet(ModelViewSet):
