@@ -22,6 +22,10 @@ class UsersViewSet(ModelViewSet):
     queryset = CustomUser.objects.all()
     permission_classes = [permissions.UserModelPermission]
 
+    @list_route(permission_classes=[IsAuthenticated])
+    def me(self, request):
+        return Response(self.serializer_class(instance=request.user, many=False, context=dict(request=request)).data)
+
 
 class TasksViewSet(ModelViewSet):
     serializer_class = serializers.TaskSerializer

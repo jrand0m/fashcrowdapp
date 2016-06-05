@@ -22,9 +22,10 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('id', 'url', 'username', 'first_name', 'last_name', 'photo', 'points', 'badges_earned')
+        read_only = ('points',)
         #fields = ('id', 'url', 'username', 'first_name', 'last_name', 'photo', 'points', 'badges_earned')
 
-    badges_earned = SerializerMethodField()
+    badges_earned = SerializerMethodField(read_only=True)
 
     def get_badges_earned(self, obj):
         #TODO mike: dont know how not to include all badges
