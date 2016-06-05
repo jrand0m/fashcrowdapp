@@ -38,7 +38,7 @@ class TasksViewSet(ModelViewSet):
 
         process_badges(self.request.user)
 
-        Event.create_new('task_created', [self.request.user])
+        # Event.create_new('task_created', [self.request.user])
         users = list(CustomUser.objects.exclude(id=self.request.user.id).all())
         Event.create_new('new_task', users)
 

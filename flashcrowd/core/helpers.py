@@ -18,7 +18,7 @@ def process_badges(user):
                     except:
                         icon = None
                     Event.create_new('badge_earned', [user], dict(
-                        icon=icon,
+                        icon=icon or '',
                         name=badge.name
                     ))
             except TypeError as e:
