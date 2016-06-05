@@ -135,14 +135,14 @@ class UserBadge(models.Model):
 
 class Event(models.Model):
     TYPES = (
-        ('task_created', 'Your task is now live!'),
-        ('new_task', 'We have a new task for you!'),
-        ('task_accepted', 'Someone accepted your task!'),
-        ('task_rejected', 'Someone rejected your task.'),
-        ('task_completed', 'Someone completed your task!'),
-        ('proof_accepted', 'Congrats! Creator accepted your proof!'),
-        ('proof_rejected', 'Oops... Creator rejected your proof! :('),
-        ('badge_earned', 'You earned a new badge!<br /><img src="{icon}" /><br /><h4>{badge}</h4>')
+        ('task_created', 'Your task is now live!'),  # Deprecated
+        ('new_task', 'We have a new task for you!'),  # Task
+        ('task_accepted', 'Someone accepted your task!'),  # Deprecated
+        ('task_rejected', 'Someone rejected your task.'),  # Deprecated
+        ('task_completed', 'Someone completed your task!'),  # Call
+        ('proof_accepted', 'Congrats! Creator accepted your proof!'),  # Task
+        ('proof_rejected', 'Oops... Creator rejected your proof! :('),  # Task
+        ('badge_earned', 'You earned a new badge!')  # Badge
     )
 
     TYPE_TO_STYLE_MAP = dict(

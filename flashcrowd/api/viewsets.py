@@ -51,7 +51,7 @@ class TasksViewSet(ModelViewSet):
             call = Call(task=task, executor=request.user, state='accepted' if is_accept else 'rejected')
             call.save()
 
-            Event.create_new('task_accepted' if is_accept else 'task_rejected', [task.author])
+            # Event.create_new('task_accepted' if is_accept else 'task_rejected', [task.author])
 
             process_badges(request.user)
 
