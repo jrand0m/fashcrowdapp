@@ -11,12 +11,6 @@ class CategorySerializer(ModelSerializer):
         model = Category
         fields = ('id', 'name', 'description', 'icon')
 
-    def to_representation(self, instance):
-        return dict(
-            id="",
-            name=""
-        )
-
 
 class UserSerializer(ModelSerializer):
     class Meta:
@@ -129,14 +123,28 @@ class BadgeSerializer(ModelSerializer):
 class EventSerializer(ModelSerializer):
     class Meta:
         model = Event
-        fields = ('id', 'url', 'type', 'style', 'message', 'date')
+        fields = ('id', 'url', 'type', 'style', 'message', 'date', 'content_object')
 
     date = SerializerMethodField()
+    content_object = SerializerMethodField()
 
     def get_date(self, obj):
         epoch = datetime.utcfromtimestamp(0)
         return int((obj.date_created.replace(tzinfo=None) - epoch).total_seconds() * 1000000)
         # return int(time.mktime(obj.date_created.timetuple()) * 1000)
+
+    def get_content_object(self, obj):
+        content_object = obj.content_object
+        if isinstance(content_object, Task):
+            serializer = TaskSerializer
+        elif isinstance(content_object, Call):
+            serializer = CallSerializer
+        elif isinstance(content_object, UserBadge):
+            serializer = UserBadgesSerializer
+        else:
+            return None
+
+        return serializer(instance=content_object, many=False, context=self.context).data
 
 
 class DeepTaskSerializer(TaskSerializer):

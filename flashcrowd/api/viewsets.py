@@ -34,12 +34,12 @@ class TasksViewSet(ModelViewSet):
     queryset = Task.objects.order_by('-date_created')
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        task = serializer.save(author=self.request.user)
 
         process_badges(self.request.user)
 
         users = list(CustomUser.objects.exclude(id=self.request.user.id).all())
-        Event.create_new('new_task', users, related_object=None)
+        Event.create_new('new_task', users, related_object=task)
 
     def accept_or_reject(self, request, pk, is_accept):
         task = get_object_or_404(Task, pk=pk)
@@ -160,7 +160,7 @@ class CallsViewSet(ModelViewSet):
 
         call.executor.grant_points(call.task.get_final_bounty())
 
-        Event.create_new('proof_accepted', related_object=call.executor)
+        Event.create_new('proof_accepted', [call.executor], related_object=call.task)
 
         return Response(serializers.CallSerializer(instance=call, many=False, context=dict(request=request)).data)
 
@@ -176,7 +176,7 @@ class CallsViewSet(ModelViewSet):
         call.state = 'lost'
         call.save()
 
-        Event.create_new('proof_rejected', related_object=call.executor)
+        Event.create_new('proof_rejected', [call.executor], related_object=call.task)
 
         return Response(serializers.CallSerializer(instance=call, many=False, context=dict(request=request)).data)
 

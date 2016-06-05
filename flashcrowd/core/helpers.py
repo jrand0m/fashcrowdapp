@@ -12,7 +12,7 @@ def process_badges(user):
         if badge not in exclude_badges_list:
             try:
                 if eval(badge.validator, globals(), locals()):
-                    UserBadge.objects.create(user=user, badge=badge, award_date=datetime.now())
+                    user_badge = UserBadge.objects.create(user=user, badge=badge, award_date=datetime.now())
                     try:
                         icon = badge.icon.url
                     except:
@@ -21,7 +21,7 @@ def process_badges(user):
                     #     icon=icon or '',
                     #     name=badge.name
                     # ))
-                    Event.create_new('badge_earned', [user])
+                    Event.create_new('badge_earned', [user], related_object=user_badge)
             except TypeError as e:
                 print "error!  i know - very informative. probably bad validation badge id {}. error is {}".format(
                     badge.id, e)
