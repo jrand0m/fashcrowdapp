@@ -23,8 +23,7 @@ export default class extends base {
         console.log('formData in context', ctx.formData);
 
         tasks.post(ctx.formData)
-            .then(_ => this.update())
-            .then(_ => this.navigate("/"))
+            .then(_ => this.popup("Task created", "Now others can complete it", "/task/my"))
     }
 
     @route('/task/feed')
@@ -66,7 +65,7 @@ export default class extends base {
         this.freeze();
 
         tasks.accept(ctx.params.id)
-            .then(_ => this.navigate('/task/active'));
+            .then(_ => this.popup('Challenge accepted', "Now good luck completing your flash", '/task/active'));
     }
 
     @route('/task/:id/reject')
@@ -82,7 +81,7 @@ export default class extends base {
         this.freeze();
 
         tasks.complete(ctx.params.id, ctx.formData)
-            .then(_ => this.navigate('/task/active'));
+            .then(_ => this.popup('Challenge completed', "Now wait for approval to get your reward", '/task/active'));
     }
 
     @route('/calls')
@@ -98,7 +97,7 @@ export default class extends base {
         this.freeze();
 
         calls.approve(ctx.params.id)
-            .then(_ => this.navigate('/calls'));
+            .then(_ => this.popup('Proof approved!', "You have approved the flasher's proof", '/calls'));
     }
 
     @route('/call/:id/decline')
@@ -106,6 +105,6 @@ export default class extends base {
         this.freeze();
 
         calls.decline(ctx.params.id)
-            .then(_ => this.navigate('/calls'));
+            .then(_ => this.popup('Proof rejected!', "You have rejected the flasher's proof", '/calls'));
     }
 }

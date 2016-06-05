@@ -2,6 +2,8 @@ import {Route, navigate} from 'lib/controller'
 
 import $ from 'lib/jquery'
 
+import Popup from 'templates/popup.jade'
+
 function merge() {
     var x = {};
     [].slice
@@ -43,5 +45,13 @@ export default class {
         $('#page-cnt').removeClass('freeze');
 
         navigate(path)
+    }
+
+    popup(summary, message, redirect) {
+        this.shade(Popup, {
+            summary,
+            message,
+            href: redirect
+        });
     }
 }

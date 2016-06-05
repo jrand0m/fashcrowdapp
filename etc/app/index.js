@@ -5,6 +5,7 @@ import btAlerts from 'bootstrap/alert'
 
 import feed from 'controllers/feed'
 import task from 'controllers/task'
+import profile from 'controllers/profile'
 
 import events from 'services/events'
 

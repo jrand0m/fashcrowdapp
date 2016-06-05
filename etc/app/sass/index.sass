@@ -37,10 +37,13 @@ $fa-font-path: "/static/fonts"
 @import "_helpers"
 @import "../bower/font-awesome/scss/font-awesome"
 
+@import "fonts"
+
 @import "spinner"
 
 body
-    background: $bg
+  background: $bg
+  font-family: "San Francisco", sans-serif
 
 footer
   position: fixed
@@ -119,11 +122,22 @@ header
   left: 0
   right: 0
 
-//  .dlg--content, .dlg--header, .dlg--footer
-//    background: #fff
+  //.dlg--content, .dlg--header, .dlg--footer
+    background: #fff
 
-  .dlg--content
+  //.dlg--content
     padding: 15px
+
+  .dlg--popup
+    position: absolute
+    top: 50%
+    left: 50%
+    width: 80vw
+    transform: translate(-50%, -50%)
+    border-radius: 2rem
+    background: white
+    padding: 15px 30px
+    box-sizing: border-box
 
 .dlg--header
 
@@ -131,10 +145,8 @@ header
     float: right
 
 .category
-  //border-radius: 50%
   width: 64px
   height: 64px
-  //background-color: $soft
   margin-right: 1rem
   background-size: 100%
 
