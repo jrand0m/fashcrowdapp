@@ -134,7 +134,8 @@ class Event(models.Model):
         ('task_rejected', 'Someone rejected your task.'),
         ('task_completed', 'Someone completed your task!'),
         ('proof_accepted', 'Congrats! Creator accepted your proof!'),
-        ('proof_rejected', 'Oops... Creator rejected your proof! :(')
+        ('proof_rejected', 'Oops... Creator rejected your proof! :('),
+        ('badge_earned', 'You earned a new badge!<br /><img src="{icon}" /><br /><h4>{badge}</h4>')
     )
 
     TYPE_TO_STYLE_MAP = dict(
@@ -144,7 +145,8 @@ class Event(models.Model):
         task_rejected='info',
         task_completed='success',
         proof_accepted='success',
-        proof_rejected='danger'
+        proof_rejected='danger',
+        badge_earned='success'
     )
 
     TYPE_TO_MESSAGE_MAP = dict(TYPES)
@@ -156,13 +158,18 @@ class Event(models.Model):
     date_created = models.DateTimeField(default=now, null=False, blank=False)
 
     @classmethod
-    def create_new(self, type, target_users):
+    def create_new(self, type, target_users, ctx=None):
+        if ctx is None:
+            ctx = dict()
         if not isinstance(target_users, (list, tuple)):
             target_users = [target_users]
+        message = Event.TYPE_TO_MESSAGE_MAP.get(type, 'No message. WAT?')
+        for key, value in ctx.items():
+            message = message.replace(u'{%s}' % key, value)
         event = Event(
             type=type,
             style=Event.TYPE_TO_STYLE_MAP.get(type, 'info'),
-            message=Event.TYPE_TO_MESSAGE_MAP.get(type, 'No message. WAT?')
+            message=message
         )
         event.save()
         for target_user in target_users:

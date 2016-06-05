@@ -211,6 +211,10 @@ class UserBadgesViewSet(ModelViewSet):
                 try:
                     if eval(badge.validator, globals(), locals()):
                         UserBadge.objects.create(user=user, badge=badge, award_date=datetime.now())
+                        Event.create_new('badge_earned', [user], dict(
+                            icon=badge.icon.url,
+                            name=badge.name
+                        ))
                 except TypeError as e:
                     print "error!  i know - very informative. probably bad validation badge id {}. error is {}".format(badge.id, e)
         return UserBadge.objects.filter(user=user)
