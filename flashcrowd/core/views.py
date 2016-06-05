@@ -1,5 +1,9 @@
+from django.core.urlresolvers import reverse
 from django.shortcuts import render
 import json
+
+def main(request):
+    return render(request, 'auth.html', dict(target_url='/app'))
 
 def index(request):
     user = request.user
@@ -19,7 +23,7 @@ def index(request):
         }
         return render(request, 'index.html', context)
     else:
-        return render(request, 'auth.html', dict())
+        return render(request, 'auth.html', dict(target_url=reverse('facebook_login')))
 
 def make_error_handler(code, status):
     def error_handler(request):
