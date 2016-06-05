@@ -1,7 +1,7 @@
 import $ from 'lib/jquery'
 import {navigate, dispatchFormData} from 'lib/controller'
 
-import touchEvents from 'bower/JQuery-Touch-Events/index'
+import touchEvents from 'bower/jQuery-Touch-Events/index'
 
 import btAlerts from 'bootstrap/alert'
 
