@@ -42,13 +42,13 @@ class Task(models.Model):
 
     def save(self, *args, **kwargs):
         tags_detected = re.findall(r'\b#\w+', self.description)
+        super(Task, self).save(*args, **kwargs)
         self.tags.clear()
         for new_tag in tags_detected:
             self.tags.add(new_tag)
 
-        super(Task, self).save(*args, **kwargs)
 
-    def __repr__(self):
+def __repr__(self):
         return self.__unicode__()
 
     def __unicode__(self):
