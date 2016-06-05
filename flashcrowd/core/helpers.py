@@ -17,10 +17,11 @@ def process_badges(user):
                         icon = badge.icon.url
                     except:
                         icon = None
-                    Event.create_new('badge_earned', [user], dict(
-                        icon=icon or '',
-                        name=badge.name
-                    ))
+                    # Event.create_new('badge_earned', [user], dict(
+                    #     icon=icon or '',
+                    #     name=badge.name
+                    # ))
+                    Event.create_new('badge_earned', [user])
             except TypeError as e:
                 print "error!  i know - very informative. probably bad validation badge id {}. error is {}".format(
                     badge.id, e)

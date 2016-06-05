@@ -18,7 +18,6 @@ def index(request):
             bootstrap_json['avatar'] = user.photo.url
         bootstrap_json['points'] = user.points
 
-
         context = {
             'bootstrap_json': json.dumps(bootstrap_json),
         }
