@@ -1,9 +1,10 @@
 from django.core.urlresolvers import reverse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import json
 
 def main(request):
-    return render(request, 'auth.html', dict(target_url='/app'))
+    # return render(request, 'auth.html', dict(target_url='/app'))
+    return redirect('/app')
 
 def index(request):
     user = request.user
