@@ -164,10 +164,10 @@ header
     background-image: url(/static/images/mini-badges-92.png)
 
   &.team
-    background-image: url(/static/images/mini-badges-93.png)
+    background-image: url(/static/images/mini-badges-94.png)
 
   &.mystery
-    background-image: url(/static/images/mini-badges-94.png)
+    background-image: url(/static/images/mini-badges-93.png)
 
 .main-menu
     padding-left: 5%
@@ -223,3 +223,35 @@ header
     overflow: hidden
     border-radius: 50%
 
+.award + .award
+  margin-top: 15px
+
+.award
+  .card
+    width: auto
+    line-height: 40px
+
+  .level
+    display: inline-block
+    border-radius: 50%
+    border: 1px solid $accent
+    background: white
+    height: 24px
+    width: 24px
+    vertical-align: middle
+
+    &.earned
+      background: $accent
+
+  .level + .level
+    position: relative
+    margin-left: 30px
+
+    &::before
+      content: ' '
+      position: absolute
+      left: -20px
+      width: 10px
+      top: 50%
+      height: 1px
+      background: $accent

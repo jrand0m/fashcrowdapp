@@ -1,3 +1,27 @@
-//
-   Created by admin on 6/5/16.
+mixin award(type, level)
+    .award
+        .pull-left
+            .category(class=type)
+        .cnt
+            .progress-bar.card
+                each l in [0,1,2,3,4]
+                    span.level(class=l < level ? 'earned' : '')
+        .clearfix
 
+header
+    .text-center: strong Awards
+
+
+.awards
+    .award.header
+
+    -var mapping={2: 'mystery', 3: 'selfie', 4: 'geo', 5: 'team', 6: 'stranger'}
+    -var levels = {}
+    each award in model.badges_earned
+        -levels[mapping[award.id]] = award.level
+
+    +award('selfie', levels.selfie)
+    +award('stranger', levels.stranger)
+    +award('team', levels.team)
+    +award('mystery', levels.mystery)
+    +award('geo', levels.geo)
