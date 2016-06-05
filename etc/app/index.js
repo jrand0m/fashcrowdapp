@@ -17,7 +17,7 @@ $(() => {
     $($.parseHTML(Layout(data))).appendTo('body');
 
     $('body')
-        .on('click', '[data-href]', function (e) {
+        .on('click touchstart', '[data-href]', function (e) {
             e.preventDefault();
             navigate($(this).data('href'));
         })
@@ -25,7 +25,7 @@ $(() => {
             e.preventDefault();
             dispatchFormData($(e.target).data('action'), new FormData(e.target));
         })
-        .on('click', '.dialog .close-me', e => {
+        .on('click touchstart', '.dialog .close-me', e => {
             e.preventDefault();
             $(e.target).closest('.dialog').remove()
         });
