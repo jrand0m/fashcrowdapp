@@ -46,6 +46,7 @@ class Task(models.Model):
         self.tags.clear()
         for new_tag in tags_detected:
             self.tags.add(new_tag)
+        super(Task, self).save(*args, **kwargs)
 
 
 def __repr__(self):
