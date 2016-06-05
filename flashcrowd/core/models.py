@@ -22,7 +22,7 @@ class Category(models.Model):
 
 # @staticmethod
 def get_default_category():
-    return Category.objects.first().id
+    return 1
 
 
 class Task(models.Model):
