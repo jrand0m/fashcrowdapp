@@ -117,7 +117,7 @@ class TaskSerializer(ModelSerializer):
 class BadgeSerializer(ModelSerializer):
     class Meta:
         model = Badge
-        fields = ('id', 'url', 'icon', 'name', 'description', 'level')
+        fields = ('id', 'url', 'icon', 'name', 'description', 'slug')
 
 
 class EventSerializer(ModelSerializer):

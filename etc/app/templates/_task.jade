@@ -10,9 +10,12 @@ mixin TaskCard(task)
                 b= task.summary
                 | &nbsp;
 
-                if task.call
+                small.thin= task.description
+
+            if task.call
+                div
                     i= task.call.state
                     | &nbsp;
 
-                small.thin= task.description
+
         .clearfix
