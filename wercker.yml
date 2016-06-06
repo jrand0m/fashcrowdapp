@@ -1,0 +1,165 @@
+# This references a standard debian container from the
+# Docker Hub https://registry.hub.docker.com/_/debian/
+# Read more about containers on our dev center
+# http://devcenter.wercker.com/docs/containers/index.html
+# box: debian
+#box: python:2.7-slim
+#box: wercker/python
+#box: darron/ubuntu14.04@1.0.3
+box: python:2.7
+
+# You can also use services such as databases. Read more on our dev center:
+# http://devcenter.wercker.com/docs/services/index.html
+# services:
+    # - postgres
+    # http://devcenter.wercker.com/docs/services/postgresql.html
+
+    # - mongodb
+    # http://devcenter.wercker.com/docs/services/mongodb.html
+
+# This is the build pipeline. Pipelines are the core of wercker
+# Read more about pipelines on our dev center
+# http://devcenter.wercker.com/docs/pipelines/index.html
+build:
+    # Steps make up the actions in your pipeline
+    # Read more about steps on our dev center:
+    # http://devcenter.wercker.com/docs/steps/index.html
+  steps:
+#    - script:
+#        name: preparation tweaks
+#        code: |
+#          apt-get update
+#          apt-get -y dist-upgrade
+
+    - install-packages:
+        name: installing native packages
+        packages: openssh-client curl redis-server python-setuptools python-gevent python-pip python-pil python-yaml python-pyspatialite python-redis sed make
+        # python-virtualenv libtiff5-dev libjpeg62-turbo-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk
+
+    - script:
+        name: installing virtualenv
+        code: |
+          pip2 install virtualenv
+
+    - script:
+        name: starting redis
+        code: |
+          /etc/init.d/redis-server start
+
+#    - script:
+#        name: installing nodejs requirements
+#        code: |
+#          rm -rf /var/lib/apt/lists/*
+#          echo 'Acquire::Check-Valid-Until "0";' > /etc/apt/apt.conf.d/00bust-checks
+#
+#          # update-alternatives --install /usr/bin/node nodejs /usr/bin/nodejs 100
+#          # curl https://www.npmjs.com/install.sh | sh
+#
+#          curl -sL https://deb.nodesource.com/setup_5.x | sh
+#          apt-get -o Acquire::Check-Valid-Until=false install --yes nodejs
+#          npm install -g less
+
+    - virtualenv:
+        name: virtual environment
+        python_location: /usr/bin/python2.7
+
+    - script:
+        name: env
+        code: |
+          export PYTHONPATH="/usr/lib/python2.7/dist-packages:$PYTHONPATH"
+#          echo "$ export"
+#          export
+#          echo "$ env"
+#          env
+#          echo "python path"
+#          python2 -c "import sys; print '\n'.join(sys.path)"
+#          echo "$ dpkg-query -L python-gevent"
+#          dpkg-query -L python-gevent
+
+    - pip-install:
+        name: python dependencies
+        requirements_file: "requirements/test.txt"
+
+    - script:
+        name: running tests
+        code: |
+          make test
+#          DJANGO_SETTINGS_MODULE=innervision.settings.test py.test innervision --nomigrations --cov-report html --cov=innervision --create-db --verbose
+
+  after-steps:
+    - install-packages:
+        name: installing native packages
+        packages: openssh-client curl sshpass
+
+    - add-to-known_hosts:
+        hostname: dun.ai
+
+#    - script:
+#        name: 'Update coverage'
+#        code: |
+#          ./utils/coverage_badge.sh
+#          sshpass -p '1234qwerASDFZXCV' scp /tmp/coverage.svg public@dun.ai:/home/public/public/innervision-coverage.svg
+
+    - script:
+        name: 'Notify to Telegram'
+        code: |
+          URL=https://api.telegram.org/bot203615846:AAETx8rbAjlwVfiQRN7pVUtmHV2bc70xbl0/sendMessage
+          if [[ "$WERCKER_RESULT" == "passed" ]]
+          then
+            curl $URL -H "Content-Type: application/json" -d "{\"text\": \"#build #success Build successful\", \"chat_id\": \"-103635469\"}"
+          else
+            curl $URL -H "Content-Type: application/json" -d "{\"text\": \"#build #error Build failed.\n\nFailing command: $WERCKER_FAILED_STEP_DISPLAY_NAME\", \"chat_id\": \"-103635469\"}"
+          fi
+
+#    - internal/store-container
+
+deploy:
+  steps:
+    - install-packages:
+        name: installing native packages
+        packages: openssh-client curl
+
+    - add-to-known_hosts:
+        hostname: dun.ai
+
+    - mktemp:
+       envvar: PRIVATEKEY_PATH
+
+    - create-file:
+       name: write key
+       filename: $PRIVATEKEY_PATH
+       content: $FORNEX_PRIVATE
+       overwrite: true
+       hide-from-log: true
+
+    - script:
+        name: 'Pull sources'
+        code: |
+          ssh -i $PRIVATEKEY_PATH -l anderson dun.ai 'cd /var/apps/flashcrowd; git stash; git stash drop; git pull'
+
+    - script:
+        name: 'Upgrade production'
+        code: |
+          ssh -i $PRIVATEKEY_PATH -l anderson dun.ai 'cd /var/apps/flashcrowd; ./build.sh'
+
+#    - script:
+#        name: 'Generate new map'
+#        code: |
+#          ssh -i $PRIVATEKEY_PATH -l anderson dun.ai 'cd /var/apps/flashcrowd; ./prod ./manage.py update_map'
+
+    - script:
+        name: 'Restart app'
+        code: |
+          ssh -i $PRIVATEKEY_PATH -l anderson dun.ai 'cd /var/apps/flashcrowd; sc stop app@flashcrowd; sleep 2; sc start app@flashcrowd'
+
+  after-steps:
+    - script:
+        name: 'Notify to Telegram'
+        code: |
+          URL=https://api.telegram.org/bot203615846:AAETx8rbAjlwVfiQRN7pVUtmHV2bc70xbl0/sendMessage
+          if [[ "$WERCKER_RESULT" == "passed" ]]
+          then
+            curl $URL -H "Content-Type: application/json" -d "{\"text\": \"#deploy #success Deploy successful\", \"chat_id\": \"-103635469\"}"
+          else
+            curl $URL -H "Content-Type: application/json" -d "{\"text\": \"#deploy #error Deploy failed.\n\nFailing command: $WERCKER_FAILED_STEP_DISPLAY_NAME\", \"chat_id\": \"-103635469\"}"
+          fi
