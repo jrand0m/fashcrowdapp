@@ -12,6 +12,8 @@
     "cpx-bt": "./node_modules/cpx/bin/index.js \"./app/bower/bootstrap-sass/assets/fonts/**\" \"./dist/fonts\"",
     "cpx-all": "npm run cpx-jquery && npm run cpx-fa && npm run cpx-bt",
     "cpx": "./node_modules/cpx/bin/index.js \"./dist/**\" \"./../flashcrowd/static\"",
+    "cpx-pg": "./node_modules/cpx/bin/index.js \"./dist/**\" \"./../phonegap/www/static\"",
+    "cpx-ios": "./node_modules/cpx/bin/index.js \"./dist/**\" \"./../phonegap/platforms/ios/www/static\"",
     "postinstall": "npm run bower && npm run node-sass && npm run webpack && npm run cpx-all && npm run cpx",
     "jade": "npm run webpack && npm run cpx-all && npm run cpx",
     "sass": "npm run node-sass && npm run cpx"

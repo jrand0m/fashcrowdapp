@@ -15,7 +15,7 @@ import Layout from 'templates/layout.jade'
 import Alerts from 'templates/alerts.jade'
 
 $(() => {
-    var data = JSON.parse($('#profile').text());
+    var data = {};
 
     $($.parseHTML(Layout(data))).appendTo('body');
 

@@ -3,12 +3,13 @@ import page from 'bower/page/page'
 import queryParser from './query-parser'
 
 var globalId = 10000,
-    controllers = new WeakMap();
+    controllers = new WeakMap(),
+    APP_BASE = (window.APP_BASE === undefined ? '/app' : '') || window.APP_BASE;
 
 export function Route(path: string) {
     return function (target, method) {
         target.__ID = target.__ID || ('controller-' + (globalId++));
-        page('/app' + path, (ctx, next) => {
+        page(APP_BASE + path, (ctx, next) => {
             var cnt = controllers[target.__ID];
             if (!cnt) {
                 cnt = controllers[target.__ID] = new target.constructor;
@@ -22,7 +23,7 @@ export function Route(path: string) {
 }
 
 export function navigate(path) {
-    page.redirect(path.match(/^\/app/) ? path : '/app' + path);
+    page.redirect(path.indexOf(APP_BASE) == 0 ? path : APP_BASE + path);
 }
 
 var fd = null;

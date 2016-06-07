@@ -13,11 +13,13 @@ function getCookie(c_name) {
     }
 }
 
+const BASE_URL = window.BASE_URL || '';
+
 export default class Base {
 
     get_(url: string, data: Object): Promise {
         return new Promise((resolve, reject) => {
-            $.getJSON(url, data)
+            $.getJSON(BASE_URL + url, data)
                 .done(resolve)
                 .fail(reject);
 
@@ -31,7 +33,7 @@ export default class Base {
         return new Promise((resolve, reject) => {
 
             var oReq = new XMLHttpRequest();
-            oReq.open("POST", url + (url.indexOf('?') >= 0 ? '&': '?') + 'format=json');
+            oReq.open("POST", BASE_URL + url + (url.indexOf('?') >= 0 ? '&': '?') + 'format=json');
 
             oReq.addEventListener("load", _ => resolve(JSON.parse(oReq.responseText)));
             oReq.addEventListener("error", _ => reject());

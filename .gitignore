@@ -2,7 +2,7 @@
 .idea/
 *.pyc
 *.pyo
-etc/node_modules/
+**/node_modules/
 etc/dist/
 etc/app/bower/
 flashcrowd/static/*.js
@@ -11,3 +11,6 @@ flashcrowd/static/*.css
 flashcrowd/static/fonts/
 *.sqlite3
 flashcrowd/media
+phonegap/**/static
+phonegap/platforms/**/www/index.html
+phonegap/platforms/**/build
