@@ -10,13 +10,13 @@ header
             | Wallet: #{model.points}
     .row(style="margin-top: 2rem; margin-bottom: 2rem")
         .col-xs-4.text-center
-            .circled 12
+            .circled #{model.participated}
             small Participated
         .col-xs-4.text-center
-            .circled 5
+            .circled #{model.created}
             small Created
         .col-xs-4.text-center
-            .circled 35
+            .circled #{model.friends}
             small Friends
 
 .history
