@@ -128,29 +128,29 @@ deploy:
     - create-file:
        name: write key
        filename: $PRIVATEKEY_PATH
-       content: $FORNEX_PRIVATE
+       content: $ARCHER_PRIVATE
        overwrite: true
        hide-from-log: true
 
     - script:
         name: 'Pull sources'
         code: |
-          ssh -i $PRIVATEKEY_PATH -l anderson dun.ai 'cd /var/apps/flashcrowd; git stash; git stash drop; git pull'
+          ssh -i $PRIVATEKEY_PATH -l flash dun.ai 'cd /var/apps/flashcrowd; git stash; git stash drop; git pull'
 
-    - script:
-        name: 'Upgrade production'
-        code: |
-          ssh -i $PRIVATEKEY_PATH -l anderson dun.ai 'cd /var/apps/flashcrowd; ./build.sh'
+#    - script:
+#        name: 'Upgrade production'
+#        code: |
+#          ssh -i $PRIVATEKEY_PATH -l anderson dun.ai 'cd /var/apps/flashcrowd; ./build.sh'
 
 #    - script:
 #        name: 'Generate new map'
 #        code: |
 #          ssh -i $PRIVATEKEY_PATH -l anderson dun.ai 'cd /var/apps/flashcrowd; ./prod ./manage.py update_map'
 
-    - script:
-        name: 'Restart app'
-        code: |
-          ssh -i $PRIVATEKEY_PATH -l anderson dun.ai 'cd /var/apps/flashcrowd; sc stop app@flashcrowd; sleep 2; sc start app@flashcrowd'
+#    - script:
+#        name: 'Restart app'
+#        code: |
+#          ssh -i $PRIVATEKEY_PATH -l anderson dun.ai 'cd /var/apps/flashcrowd; sc stop app@flashcrowd; sleep 2; sc start app@flashcrowd'
 
   after-steps:
     - script:
