@@ -18,12 +18,24 @@ class UserSerializer(ModelSerializer):
         fields = (
             'id', 'url',
             'username', 'first_name', 'last_name', 'display_name',
-            'photo', 'photo_url', 'points', 'badges_earned', 'display_name'
+            'photo', 'photo_url', 'points', 'badges_earned', 'display_name',
+            'participated',
+            'created',
+            'friends',
+            'wallet'
         )
         read_only = ('points',)
         #fields = ('id', 'url', 'username', 'first_name', 'last_name', 'photo', 'points', 'badges_earned')
 
     badges_earned = SerializerMethodField(read_only=True)
+
+    display_name = SerializerMethodField()
+    photo_url = SerializerMethodField()
+
+    participated = SerializerMethodField()
+    created = SerializerMethodField()
+    friends = SerializerMethodField()
+    wallet = SerializerMethodField()
 
     def get_badges_earned(self, obj):
         #TODO mike: dont know how not to include all badges
@@ -31,15 +43,25 @@ class UserSerializer(ModelSerializer):
         queryset = Badge.objects.filter(id__in=user_badge_ids)
         return BadgeSerializer(instance=queryset, context=self.context, many=True).data
 
-    display_name = SerializerMethodField()
-    photo_url = SerializerMethodField()
-
     def get_display_name(self, obj):
         return obj.get_display_name()
 
     def get_photo_url(self, obj):
         return obj.get_photo_url()
 
+    def get_participated(self, obj):
+        return obj.calls.count()
+
+    def get_created(self, obj):
+        return obj.authored_tasks.count()
+
+    def get_friends(self, obj):
+        return 0
+        # sorry to hear that you have no friends, faggot :D
+    def get_wallet(self, obj):
+        def summ(x, y):
+            return x + y
+        return reduce(summ, [call.task.bounty for call in obj.calls.filter(state='won')])
 
 class CallSerializer(ModelSerializer):
     class Meta:
