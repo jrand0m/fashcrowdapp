@@ -87,12 +87,12 @@ build:
 #          DJANGO_SETTINGS_MODULE=innervision.settings.test py.test innervision --nomigrations --cov-report html --cov=innervision --create-db --verbose
 
   after-steps:
-    - install-packages:
-        name: installing native packages
-        packages: openssh-client curl sshpass
+#    - install-packages:
+#        name: installing native packages
+#        packages: openssh-client curl sshpass
 
-    - add-to-known_hosts:
-        hostname: dun.ai
+#    - add-to-known_hosts:
+#        hostname: dun.ai
 
 #    - script:
 #        name: 'Update coverage'
@@ -100,16 +100,22 @@ build:
 #          ./utils/coverage_badge.sh
 #          sshpass -p '1234qwerASDFZXCV' scp /tmp/coverage.svg public@dun.ai:/home/public/public/innervision-coverage.svg
 
-    - script:
-        name: 'Notify to Telegram'
-        code: |
-          URL=https://api.telegram.org/bot203615846:AAETx8rbAjlwVfiQRN7pVUtmHV2bc70xbl0/sendMessage
-          if [[ "$WERCKER_RESULT" == "passed" ]]
-          then
-            curl $URL -H "Content-Type: application/json" -d "{\"text\": \"#build #success Build successful\", \"chat_id\": \"-103635469\"}"
-          else
-            curl $URL -H "Content-Type: application/json" -d "{\"text\": \"#build #error Build failed.\n\nFailing command: $WERCKER_FAILED_STEP_DISPLAY_NAME\", \"chat_id\": \"-103635469\"}"
-          fi
+#    - script:
+#        name: 'Notify to Telegram'
+#        code: |
+#          URL=https://api.telegram.org/bot203615846:AAETx8rbAjlwVfiQRN7pVUtmHV2bc70xbl0/sendMessage
+#          if [[ "$WERCKER_RESULT" == "passed" ]]
+#          then
+#            curl $URL -H "Content-Type: application/json" -d "{\"text\": \"#build #success Build successful\", \"chat_id\": \"-103635469\"}"
+#          else
+#            curl $URL -H "Content-Type: application/json" -d "{\"text\": \"#build #error Build failed.\n\nFailing command: $WERCKER_FAILED_STEP_DISPLAY_NAME\", \"chat_id\": \"-103635469\"}"
+#          fi
+
+    - slack-notifier:
+        url: https://hooks.slack.com/services/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
+        channel: ci
+        username: wercker
+        branch: master
 
 #    - internal/store-container
 

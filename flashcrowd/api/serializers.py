@@ -61,7 +61,7 @@ class UserSerializer(ModelSerializer):
     def get_wallet(self, obj):
         def summ(x, y):
             return x + y
-        return reduce(summ, [call.task.bounty for call in obj.calls.filter(state='won')])
+        return reduce(summ, [call.task.bounty for call in obj.calls.filter(state='won')] or [0])
 
 class CallSerializer(ModelSerializer):
     class Meta:
