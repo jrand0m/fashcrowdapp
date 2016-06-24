@@ -67,6 +67,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'flashcrowd.libs.middleware.ExceptionNotifier',
 ]
 
 ROOT_URLCONF = 'flashcrowd.urls'
@@ -161,3 +162,5 @@ REST_FRAMEWORK = {
 
 LOGIN_REDIRECT_URL = '/app'
 ACCOUNT_LOGOUT_ON_GET = True
+
+SLACK_NOTIFIER_URL = 'https://hooks.slack.com/services/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'

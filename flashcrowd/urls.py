@@ -30,5 +30,5 @@ urlpatterns = [
     url(r'^api/', include('flashcrowd.api.urls')),
     url(r'', include('flashcrowd.core.urls', namespace='core')),
     url(r'^accounts/', include('allauth.urls')),
-    url(r'^test-error', handler_500, name='test-error'),
+    url(r'^test-error', lambda request: 1 / 0, name='test-error'),
 ]
